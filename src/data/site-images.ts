@@ -11,8 +11,8 @@ export const siteImages = {
     "https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=1600&q=80",
 
   // ---- Events page ----
-  events_hero:
-    "/events/E9 Distribution of Study Items in 15 Govt Schools for 1050 Students in Sarjapura Cluster 18-Jul-2017/IMG_1193.JPG",
+  // The events hero now derives from the latest event's cover image
+  // (see components/events/hero.tsx) — served via the jsDelivr CDN.
 
   // ---- Donate page ----
   donate_hero: "/donate_hero.png",

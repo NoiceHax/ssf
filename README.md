@@ -66,22 +66,45 @@ Until the real assets are dropped into `public/`, the `<Logo>` component
 gracefully falls back to a styled wordmark. Replace the files and the rest of
 the app picks them up automatically.
 
-## Adding Events to the Archive
+## Event Media — GitHub + CDN
 
-Each historical event lives under `public/events/<slug>/` and is registered in
-`lib/events.ts`:
+Event photos are **not** stored in this repo. They live in a dedicated,
+free assets repository and are served through a CDN:
 
 ```
-public/events/
-  community-eye-camp-2023/
-    01.jpg
-    02.jpg
-    ...
+GitHub repo (e.g. noicehax/ssfimages)  ->  Statically CDN  ->  next/image
 ```
 
-Add a new entry to `pastEvents` with the same slug and a `photos` array. The
-Previous Events section lazily mounts each event card as it scrolls into view,
-so the page stays light even with many photo-heavy events.
+- **Config:** `src/config/cdn.ts` defines `CDN_BASE_URL` and the helpers every
+  URL derives from. Override the target repo/branch with env vars (see
+  `.env.example`): `NEXT_PUBLIC_GH_USERNAME`, `NEXT_PUBLIC_GH_REPO`,
+  `NEXT_PUBLIC_GH_BRANCH`.
+- **Delivery:** [Statically.io](https://statically.io) — a free CDN that serves
+  files straight from GitHub with **no repo size limit**. (jsDelivr was the
+  original plan but caps GitHub repos at 50 MB; this 700 MB+ library exceeds
+  it.) Swapping CDN providers (e.g. Cloudflare Pages) is a one-line change to
+  `CDN_BASE_URL`.
+- **Discovery:** `scripts/generate-events.mjs` runs at build time (wired into
+  `npm run dev`/`npm run build`). It enumerates the assets repo via the GitHub
+  REST git-tree API and writes `src/data/events-manifest.json` with ready-made
+  CDN URLs. No filesystem access to the assets repo at runtime — works on
+  Vercel. Set `GITHUB_TOKEN` to raise the API rate limit if needed.
+- **Source of truth:** event folder names. Format `E<number> <Title> [date]`.
+  The first image (natural sort) is the cover; the rest is the gallery.
+
+### Adding a new event (zero code changes)
+
+1. Compress images to WebP.
+2. Create `events/E27 Event Name/` in the assets repo.
+3. Add `img_001.webp`, `img_002.webp`, ...
+4. Push the assets repo and redeploy the site.
+
+The event appears automatically — no manual paths, no registration. A scaffold
+for the assets repo lives in `ssfimages/` (move it out to its own GitHub repo).
+
+The events grid renders the latest 8 events and progressively loads older ones
+(8 at a time) behind a **View Older Events** button; all images use `next/image`
+with lazy loading to stay light even with many photo-heavy events.
 
 ## Design Notes
 

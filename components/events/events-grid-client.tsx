@@ -38,9 +38,9 @@ export function EventsGridClient({ events }: { events: SiteEvent[] }) {
             onClick={() =>
               setVisible((v) => Math.min(events.length, v + CHUNK))
             }
-            aria-label={`Load ${Math.min(CHUNK, remaining)} more events`}
+            aria-label={`Load ${Math.min(CHUNK, remaining)} older events`}
           >
-            View More Events
+            View Older Events
             <ChevronDown size={18} className="ml-2" />
             <span className="ml-3 font-body text-label-md uppercase tracking-widest opacity-70">
               {remaining} left

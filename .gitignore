@@ -12,6 +12,9 @@ next-env.d.ts
 # generated at build time
 src/data/events-manifest.json
 
+# event-media assets repo scaffold — belongs in its own GitHub repo, not here
+ssfimages/
+
 # vercel
 .vercel
 

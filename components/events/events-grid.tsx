@@ -29,7 +29,8 @@ export function EventsGrid() {
 
         {events.length === 0 ? (
           <p className="font-body text-body-md text-on-surface-variant">
-            No events found in <code>/public/events/</code> yet.
+            No events published yet. Add event folders to the assets repository
+            and redeploy to see them here.
           </p>
         ) : (
           <EventsGridClient events={events} />
