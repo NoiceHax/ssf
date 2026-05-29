@@ -6,14 +6,6 @@ import { PhotoGallery } from "@/components/events/photo-gallery";
 
 type Params = { slug: string };
 
-// Force Node runtime (the scanner uses `fs`) and dynamic rendering so newly
-// added folders are discovered without redeploying code. dynamicParams allows
-// slugs not in generateStaticParams to render on demand.
-export const runtime = "nodejs";
-export const dynamic = "force-dynamic";
-export const dynamicParams = true;
-export const revalidate = 0;
-
 export function generateStaticParams(): Params[] {
   return getAllEvents().map((e) => ({ slug: e.slug }));
 }

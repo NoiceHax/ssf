@@ -9,6 +9,9 @@ out/
 build/
 next-env.d.ts
 
+# generated at build time
+src/data/events-manifest.json
+
 # vercel
 .vercel
 
