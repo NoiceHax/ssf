@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-surface text-on-surface font-body antialiased;
+    @apply selection:bg-secondary-fixed selection:text-on-secondary-fixed;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    @apply font-headline text-primary;
+  }
+}
+
+@layer utilities {
+  .story-gradient {
+    background: linear-gradient(to bottom, transparent, rgba(0, 32, 69, 0.8));
+  }
+  .hero-gradient {
+    background: linear-gradient(
+      180deg,
+      rgba(251, 249, 245, 0) 0%,
+      rgba(251, 249, 245, 1) 100%
+    );
+  }
+  .editorial-shadow {
+    box-shadow: 0 20px 50px -12px rgba(0, 32, 69, 0.06);
+  }
+  .skeleton {
+    @apply relative overflow-hidden bg-surface-container-high;
+  }
+  .skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.55),
+      transparent
+    );
+    background-size: 1000px 100%;
+    animation: shimmer 2s linear infinite;
+  }
+}
