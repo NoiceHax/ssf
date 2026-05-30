@@ -18,7 +18,7 @@
       "+91 99005 14779"
     ],
     address: {
-      lineOne: "Sy. No. 5, Navami Nilaya, Ittangur Road, ",
+      lineOne: "Sy. No. 5, Navami Nilaya, Ittangur Road",
       lineTwo: "Sarjapura, Bengaluru, Karnataka 562125",
       mapsUrl: "https://share.google/oaGOxzILoPdvATbF2",
     },

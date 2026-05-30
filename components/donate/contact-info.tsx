@@ -28,7 +28,7 @@ const items: Item[] = [
     label: "Address",
     values: [
       {
-        text: `${brand.contact.address.lineOne} ${brand.contact.address.lineTwo}`,
+        text: `${brand.contact.address.lineOne}, ${brand.contact.address.lineTwo}`,
       },
     ],
   },

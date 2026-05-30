@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { brand } from "@/lib/brand";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Sneha Sammilana Foundation",
@@ -116,10 +117,10 @@ export default function PrivacyPolicyPage() {
           <p className="font-body text-body-md text-on-surface-variant">
             Email:{" "}
             <a
-              href="mailto:snehasammllanafoundation@gmail.com"
+              href={`mailto:${brand.contact.email}`}
               className="font-semibold text-primary underline-offset-4 hover:underline"
             >
-              snehasammllanafoundation@gmail.com
+              {brand.contact.email}
             </a>
           </p>
           <p className="mt-4 font-body text-body-md text-on-surface-variant">
