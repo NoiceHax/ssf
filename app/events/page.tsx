@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EventsHero } from "@/components/events/hero";
+import { UpcomingEvents } from "@/components/events/upcoming-events";
 import { EventsGrid } from "@/components/events/events-grid";
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export default function EventsPage() {
   return (
     <>
       <EventsHero />
+      <UpcomingEvents />
       <EventsGrid />
     </>
   );

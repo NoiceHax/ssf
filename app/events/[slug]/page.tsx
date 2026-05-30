@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getAllEvents, getEventBySlug } from "@/src/data/events";
+import { getAllEvents, getEventBySlug, getAdjacentEvents } from "@/src/data/events";
 import { EventDetailHero } from "@/components/events/event-detail-hero";
 import { PhotoGallery } from "@/components/events/photo-gallery";
+import { EventNav } from "@/components/events/event-nav";
 
 type Params = { slug: string };
 
@@ -24,6 +25,8 @@ export function generateMetadata({ params }: { params: Params }): Metadata {
 export default function EventDetailPage({ params }: { params: Params }) {
   const event = getEventBySlug(params.slug);
   if (!event) notFound();
+
+  const { older, newer } = getAdjacentEvents(event.slug);
 
   return (
     <article className="bg-surface">
@@ -80,6 +83,8 @@ export default function EventDetailPage({ params }: { params: Params }) {
           </div>
         </section>
       )}
+
+      <EventNav older={older} newer={newer} />
     </article>
   );
 }

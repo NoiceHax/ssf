@@ -30,12 +30,10 @@ export function WhyDonations() {
               </p>
               <blockquote className="border-l-2 border-secondary pl-6">
                 <p className="italic text-primary">
-                  &ldquo;We have never had to turn down a child from a scholarship
-                  because of money. That is only because of the people who give
-                  quietly, and again and again.&rdquo;
+                  &ldquo;We make a living by what we get, but we make a life by what we give.&rdquo;
                 </p>
                 <footer className="mt-3 text-label-md uppercase tracking-widest text-secondary">
-                  — Sneha Sammilana Founders
+                  — Winston Churchill
                 </footer>
               </blockquote>
             </div>

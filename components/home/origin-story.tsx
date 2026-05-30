@@ -1,8 +1,11 @@
 import Image from "next/image";
 import { Reveal } from "@/components/ui/reveal";
 import { siteImages } from "@/src/data/site-images";
+import { getAllEvents } from "@/src/data/events";
 
 export function OriginStory() {
+  const eventsConducted = getAllEvents().length;
+
   return (
     <section className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28 lg:px-margin-desktop lg:py-section-gap">
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-gutter">
@@ -30,7 +33,7 @@ export function OriginStory() {
               serve.&rdquo; Albus Camus 
             </p>
           </div>
-          <div className="mt-12 flex gap-12">
+          <div className="mt-12 flex flex-wrap gap-x-12 gap-y-8">
             <div>
               <div className="font-headline text-headline-md text-secondary">
                 15+
@@ -47,6 +50,16 @@ export function OriginStory() {
                 Legacy of Care
               </div>
             </div>
+            {eventsConducted > 0 && (
+              <div>
+                <div className="font-headline text-headline-md text-secondary">
+                  {eventsConducted}+
+                </div>
+                <div className="mt-1 font-body text-label-md uppercase text-on-surface-variant">
+                  Events Conducted
+                </div>
+              </div>
+            )}
           </div>
         </Reveal>
 

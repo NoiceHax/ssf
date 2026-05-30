@@ -1,12 +1,20 @@
+import Link from "next/link";
 import { ArrowUpRight, Mail, MapPin, Phone, Youtube } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { brand } from "@/lib/brand";
+
+const footerNav = [
+  { label: "Home", href: "/" },
+  { label: "Our Story", href: "/about" },
+  { label: "Events", href: "/events" },
+  { label: "Donate", href: "/donate" },
+];
 
 export function Footer() {
   return (
     <footer className="bg-inverse-surface text-inverse-on-surface">
       <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-5 py-16 md:grid-cols-12 md:gap-gutter md:px-8 md:py-20 lg:px-margin-desktop lg:py-24">
-        <div className="md:col-span-5">
+        <div className="md:col-span-4">
           <Logo variant="dark" />
           <p className="mt-6 max-w-sm font-body text-body-md text-inverse-on-surface/80">
             {brand.tagline}
@@ -31,7 +39,25 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="md:col-span-7">
+        <div className="md:col-span-3">
+          <h4 className="mb-5 font-body text-label-md font-semibold uppercase tracking-widest text-tertiary-fixed-dim">
+            Explore
+          </h4>
+          <ul className="space-y-3 font-body text-body-md text-inverse-on-surface/80">
+            {footerNav.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  className="inline-flex items-center gap-1.5 transition-colors hover:text-tertiary-fixed-dim"
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="md:col-span-5">
           <h4 className="mb-5 font-body text-label-md font-semibold uppercase tracking-widest text-tertiary-fixed-dim">
             Contact
           </h4>

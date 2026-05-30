@@ -70,7 +70,7 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Link href="/donate" className="hidden md:inline-flex">
+          <Link href="/donate" className="hidden md:inline-flex md:translate-x-2 lg:translate-x-3">
             <Button variant="primary" size="sm">
               Donate
             </Button>
