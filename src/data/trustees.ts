@@ -47,9 +47,9 @@ export const trustees: Trustee[] = [
     image: "/SSF Members Photos/Mukthar Hussain Khan.JPG",
   },
   {
-    id: "Prakasha HN",
+    id: "prakasha-hn",
     name: "Prakasha HN",
-    image: "/SSF Members Photos/File 3-3-16, 10 23 36 AM.jpeg",
+    image: "/SSF Members Photos/Prakasha HN.jpeg",
   },
   {
     id: "sn-rama-murthy",
@@ -62,8 +62,8 @@ export const trustees: Trustee[] = [
     image: "/SSF Members Photos/shashank reddy photo.jpg",
   },
   {
-    id: "Renukaradhya",
+    id: "renukaradhya",
     name: "Renukaradhya",
-    image: "/SSF Members Photos/File 19-11-16, 5 42 00 PM.jpeg",
+    image: "/SSF Members Photos/Renukaradhya.jpeg",
   }
 ];
