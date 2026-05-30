@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Camera } from "lucide-react";
 import { getAllEvents, getEventBySlug, getAdjacentEvents } from "@/src/data/events";
 import { EventDetailHero } from "@/components/events/event-detail-hero";
 import { PhotoGallery } from "@/components/events/photo-gallery";
@@ -36,10 +37,6 @@ export default function EventDetailPage({ params }: { params: Params }) {
         <div className="flex flex-wrap items-baseline gap-x-8 gap-y-2 font-body text-label-md uppercase tracking-widest text-on-surface-variant">
           <span>{event.id}</span>
           {event.date && <span>{event.date}</span>}
-          <span>
-            {event.galleryImages.length} photo
-            {event.galleryImages.length === 1 ? "" : "s"}
-          </span>
         </div>
         <h2 className="mt-4 max-w-4xl font-headline text-2xl text-primary md:text-3xl lg:text-headline-md">
           {event.title}
@@ -69,17 +66,31 @@ export default function EventDetailPage({ params }: { params: Params }) {
             >
               From the day
             </h2>
-            <p className="mt-2 font-body text-body-md text-on-surface-variant">
-              Drag horizontally to walk through the gallery.
-            </p>
           </div>
 
-          <div className="pl-5 md:pl-8 lg:pl-margin-desktop">
-            <PhotoGallery
-              photos={event.galleryImages}
-              eventTitle={event.title}
-              ariaLabel={`${event.title} photos`}
-            />
+          <PhotoGallery
+            photos={event.galleryImages}
+            eventTitle={event.title}
+            ariaLabel={`${event.title} photos`}
+          />
+        </section>
+      )}
+
+      {event.galleryImages.length === 0 && (
+        <section className="pb-20 md:pb-28 lg:pb-section-gap">
+          <div className="mx-auto max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
+            <div className="flex flex-col items-center gap-4 border border-dashed border-outline-variant bg-surface-container-low px-6 py-14 text-center md:py-20">
+              <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-secondary-fixed/50 text-secondary">
+                <Camera size={26} strokeWidth={1.5} />
+              </span>
+              <h3 className="font-headline text-xl text-primary md:text-2xl">
+                Photos coming soon
+              </h3>
+              <p className="max-w-md font-body text-body-md text-on-surface-variant">
+                We&rsquo;re still gathering the photographs from this event.
+                Check back shortly to see how the day unfolded.
+              </p>
+            </div>
           </div>
         </section>
       )}

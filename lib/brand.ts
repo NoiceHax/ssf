@@ -9,7 +9,7 @@
   appleTouchIconPath: "/logo/Logo_ssf_circled.png",
 
   contact: {
-    email: "snehasammilana@gmail.com",
+    email: "snehasammilanafoundation@gmail.com",
     phones: [
       "+91 99800 30440",
       "+91 94486 84989",
@@ -18,8 +18,8 @@
       "+91 99005 14779"
     ],
     address: {
-      lineOne: "Sy. No. 5, Ittangur Road",
-      lineTwo: "Sarjapura, Karnataka 562125",
+      lineOne: "Sy. No. 5, Navami Nilaya, Ittangur Road, ",
+      lineTwo: "Sarjapura, Bengaluru, Karnataka 562125",
       mapsUrl: "https://share.google/oaGOxzILoPdvATbF2",
     },
     youtube: "https://www.youtube.com/@snehasammilanafoundation1286",
@@ -28,7 +28,7 @@
   registration: {
     type: "Section 8 Registered Foundation",
     regNo: "BKIIV337/2015-16",
-    taxExemption: "50% tax exemption under Section 80G",
+    taxExemption: " tax exemption under Section 80G",
     pan: "",
   },
 } as const;

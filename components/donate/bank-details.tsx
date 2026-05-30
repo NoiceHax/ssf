@@ -19,7 +19,7 @@ const rows: Row[] = [
 
 export function BankDetails() {
   return (
-    <section className="bg-surface py-20 md:py-28 lg:py-section-gap">
+    <section id="bank-details" className="bg-surface py-20 md:py-28 lg:py-section-gap scroll-mt-24">
       <div className="mx-auto max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-gutter">
           <div className="lg:col-span-5">

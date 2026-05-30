@@ -1,12 +1,10 @@
-import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import { Mail, MapPin, Phone } from "lucide-react";
 import { brand } from "@/lib/brand";
 
 type Item = {
   icon: typeof Phone;
   label: string;
   values: { text: string; href?: string }[];
-  /** Optional action pill rendered at the bottom of the card. */
-  action?: { label: string; href: string };
 };
 
 const items: Item[] = [
@@ -33,10 +31,6 @@ const items: Item[] = [
         text: `${brand.contact.address.lineOne} ${brand.contact.address.lineTwo}`,
       },
     ],
-    action: {
-      label: "Open in Maps",
-      href: brand.contact.address.mapsUrl,
-    },
   },
 ];
 
@@ -56,7 +50,7 @@ export function ContactInfo() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:gap-gutter">
-          {items.map(({ icon: Icon, label, values, action }) => (
+          {items.map(({ icon: Icon, label, values }) => (
             <div
               key={label}
               className="flex flex-col rounded-xl border border-outline-variant bg-surface-container-lowest p-8"
@@ -87,17 +81,6 @@ export function ContactInfo() {
                   )
                 )}
               </div>
-              {action && (
-                <a
-                  href={action.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-5 inline-flex w-fit items-center gap-1.5 rounded-full border border-outline-variant px-4 py-2 font-body text-label-md font-semibold uppercase tracking-widest text-primary transition-all hover:border-primary hover:bg-primary-fixed"
-                >
-                  {action.label}
-                  <ArrowUpRight size={14} />
-                </a>
-              )}
             </div>
           ))}
         </div>

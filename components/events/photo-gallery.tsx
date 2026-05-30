@@ -1,9 +1,4 @@
-"use client";
-
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 type PhotoGalleryProps = {
   /** Array of image paths (e.g. from SiteEvent.galleryImages). */
@@ -15,169 +10,44 @@ type PhotoGalleryProps = {
 };
 
 /**
- * Large horizontal photo strip with:
- * - native smooth scrolling + CSS scroll-snap
- * - pointer drag (desktop)
- * - touch pan (mobile)
- * - prev/next buttons on desktop
- * - lazy-loaded next/image
- *
- * Items are sized to a fixed aspect ratio so layout shift is zero.
+ * Auto-sliding photo marquee (same mechanism as the testimonials carousel):
+ * the list is duplicated and translated -50% on an infinite loop, pausing on
+ * hover. Items are sized to a fixed box so layout shift is zero.
  */
 export function PhotoGallery({ photos, eventTitle, ariaLabel }: PhotoGalleryProps) {
-  const scrollerRef = useRef<HTMLUListElement | null>(null);
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(false);
+  if (photos.length === 0) return null;
 
-  const drag = useRef({
-    active: false,
-    moved: false,
-    startX: 0,
-    startScroll: 0,
-    pointerId: 0,
-  });
-
-  const updateNavState = useCallback(() => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const { scrollLeft, scrollWidth, clientWidth } = el;
-    setCanPrev(scrollLeft > 4);
-    setCanNext(scrollLeft + clientWidth < scrollWidth - 4);
-  }, []);
-
-  useEffect(() => {
-    updateNavState();
-    const el = scrollerRef.current;
-    if (!el) return;
-    el.addEventListener("scroll", updateNavState, { passive: true });
-    window.addEventListener("resize", updateNavState);
-    return () => {
-      el.removeEventListener("scroll", updateNavState);
-      window.removeEventListener("resize", updateNavState);
-    };
-  }, [updateNavState]);
-
-  const scrollByPage = useCallback((direction: 1 | -1) => {
-    const el = scrollerRef.current;
-    if (!el) return;
-    const step = Math.max(el.clientWidth * 0.85, 320);
-    el.scrollBy({ left: direction * step, behavior: "smooth" });
-  }, []);
-
-  const onPointerDown = (e: React.PointerEvent<HTMLUListElement>) => {
-    if (e.pointerType === "touch") return;
-    const el = scrollerRef.current;
-    if (!el) return;
-    drag.current.active = true;
-    drag.current.moved = false;
-    drag.current.startX = e.clientX;
-    drag.current.startScroll = el.scrollLeft;
-    drag.current.pointerId = e.pointerId;
-    el.setPointerCapture(e.pointerId);
-  };
-
-  const onPointerMove = (e: React.PointerEvent<HTMLUListElement>) => {
-    if (!drag.current.active) return;
-    const el = scrollerRef.current;
-    if (!el) return;
-    const dx = e.clientX - drag.current.startX;
-    if (Math.abs(dx) > 4) drag.current.moved = true;
-    el.scrollLeft = drag.current.startScroll - dx;
-  };
-
-  const endDrag = (e: React.PointerEvent<HTMLUListElement>) => {
-    if (!drag.current.active) return;
-    drag.current.active = false;
-    const el = scrollerRef.current;
-    try {
-      el?.releasePointerCapture(drag.current.pointerId);
-    } catch {
-      /* pointer already released */
-    }
-  };
+  // Duplicate the list so the marquee loops seamlessly (translate -50%).
+  const loop = [...photos, ...photos];
 
   return (
-    <div className="relative">
-      <ul
-        ref={scrollerRef}
-        role="region"
-        aria-label={ariaLabel ?? "Event photo gallery"}
-        tabIndex={0}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        onClickCapture={(e) => {
-          if (drag.current.moved) {
-            e.preventDefault();
-            e.stopPropagation();
-            drag.current.moved = false;
-          }
-        }}
-        className="flex gap-4 overflow-x-auto overscroll-x-contain scroll-smooth pb-4 md:gap-6 [scrollbar-width:thin] cursor-grab active:cursor-grabbing select-none"
-        style={{ scrollSnapType: "x mandatory" }}
-      >
-        {photos.map((src, i) => (
+    <div
+      className="group relative overflow-hidden"
+      role="region"
+      aria-label={ariaLabel ?? "Event photo gallery"}
+    >
+      {/* Edge fade */}
+      <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-surface to-transparent md:w-32" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-surface to-transparent md:w-32" />
+
+      <ul className="flex w-max gap-4 animate-marquee group-hover:[animation-play-state:paused] md:gap-6">
+        {loop.map((src, i) => (
           <li
-            key={src}
-            className="relative shrink-0 overflow-hidden bg-surface-container-high"
-            style={{ scrollSnapAlign: "start" }}
+            key={`${src}-${i}`}
+            aria-hidden={i >= photos.length ? "true" : undefined}
+            className="relative h-[300px] w-[400px] shrink-0 overflow-hidden bg-surface-container-high sm:h-[360px] sm:w-[480px] md:h-[440px] md:w-[640px] lg:h-[480px] lg:w-[720px]"
           >
-            <div className="relative h-[55vh] max-h-[640px] min-h-[280px] w-[88vw] sm:w-[600px] md:w-[760px] lg:w-[880px] xl:w-[960px]">
-              <Image
-                src={src}
-                alt={`${eventTitle ?? "Event"} photo ${i + 1}`}
-                fill
-                sizes="(max-width: 640px) 88vw, (max-width: 768px) 600px, (max-width: 1024px) 760px, (max-width: 1280px) 880px, 960px"
-                loading={i === 0 ? "eager" : "lazy"}
-                priority={i === 0}
-                draggable={false}
-                className="object-cover pointer-events-none"
-              />
-            </div>
+            <Image
+              src={src}
+              alt={`${eventTitle ?? "Event"} photo ${(i % photos.length) + 1}`}
+              fill
+              sizes="(max-width: 640px) 400px, (max-width: 768px) 480px, (max-width: 1024px) 640px, 720px"
+              loading="lazy"
+              className="object-cover"
+            />
           </li>
         ))}
       </ul>
-
-      <GalleryButton
-        direction="prev"
-        disabled={!canPrev}
-        onClick={() => scrollByPage(-1)}
-      />
-      <GalleryButton
-        direction="next"
-        disabled={!canNext}
-        onClick={() => scrollByPage(1)}
-      />
     </div>
-  );
-}
-
-function GalleryButton({
-  direction,
-  disabled,
-  onClick,
-}: {
-  direction: "prev" | "next";
-  disabled: boolean;
-  onClick: () => void;
-}) {
-  const isPrev = direction === "prev";
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={isPrev ? "Previous photo" : "Next photo"}
-      className={cn(
-        "hidden md:inline-flex absolute top-1/2 -translate-y-1/2 h-12 w-12 items-center justify-center rounded-full bg-surface/95 text-primary border border-outline-variant shadow-lg backdrop-blur-md transition-all duration-200",
-        "hover:bg-primary hover:text-on-primary hover:scale-105",
-        "disabled:opacity-0 disabled:pointer-events-none",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-        isPrev ? "left-4" : "right-4"
-      )}
-    >
-      {isPrev ? <ChevronLeft size={22} /> : <ChevronRight size={22} />}
-    </button>
   );
 }

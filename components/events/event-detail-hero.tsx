@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, ImageOff } from "lucide-react";
+import { ArrowLeft, Calendar } from "lucide-react";
 import type { SiteEvent } from "@/src/data/events";
+import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 
 export function EventDetailHero({ event }: { event: SiteEvent }) {
   return (
@@ -17,9 +18,7 @@ export function EventDetailHero({ event }: { event: SiteEvent }) {
             className="object-cover"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center text-on-primary/40">
-            <ImageOff size={72} strokeWidth={1.25} />
-          </div>
+          <ImagePlaceholder />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-primary/10" />
       </div>

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, Mail, MapPin, Phone, Youtube } from "lucide-react";
+import { ArrowUpRight, Mail, MapPin, Youtube } from "lucide-react";
 import { Logo } from "@/components/logo";
 import { brand } from "@/lib/brand";
 
@@ -8,18 +8,19 @@ const footerNav = [
   { label: "Our Story", href: "/about" },
   { label: "Events", href: "/events" },
   { label: "Donate", href: "/donate" },
+  { label: "Privacy Policy", href: "/privacy-policy" },
 ];
 
 export function Footer() {
   return (
     <footer className="bg-inverse-surface text-inverse-on-surface">
-      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-12 px-5 py-16 md:grid-cols-12 md:gap-gutter md:px-8 md:py-20 lg:px-margin-desktop lg:py-24">
+      <div className="mx-auto grid w-full max-w-7xl grid-cols-1 gap-10 px-5 py-12 md:grid-cols-12 md:gap-gutter md:px-8 md:py-14 lg:px-margin-desktop lg:py-16">
         <div className="md:col-span-4">
           <Logo variant="dark" />
-          <p className="mt-6 max-w-sm font-body text-body-md text-inverse-on-surface/80">
+          <p className="mt-4 max-w-xs font-body text-[15px] leading-relaxed text-inverse-on-surface/80">
             {brand.tagline}
           </p>
-          <div className="mt-6 flex items-center gap-3">
+          <div className="mt-5 flex items-center gap-3">
             <a
               href={`mailto:${brand.contact.email}`}
               aria-label="Email us"
@@ -40,15 +41,15 @@ export function Footer() {
         </div>
 
         <div className="md:col-span-3">
-          <h4 className="mb-5 font-body text-label-md font-semibold uppercase tracking-widest text-tertiary-fixed-dim">
+          <h4 className="mb-4 font-body text-[13px] font-semibold uppercase tracking-widest text-tertiary-fixed-dim">
             Explore
           </h4>
-          <ul className="space-y-3 font-body text-body-md text-inverse-on-surface/80">
+          <ul className="space-y-2.5 font-body text-[15px] text-inverse-on-surface/80">
             {footerNav.map((item) => (
               <li key={item.href}>
                 <Link
                   href={item.href}
-                  className="inline-flex items-center gap-1.5 transition-colors hover:text-tertiary-fixed-dim"
+                  className="transition-colors hover:text-tertiary-fixed-dim"
                 >
                   {item.label}
                 </Link>
@@ -58,12 +59,12 @@ export function Footer() {
         </div>
 
         <div className="md:col-span-5">
-          <h4 className="mb-5 font-body text-label-md font-semibold uppercase tracking-widest text-tertiary-fixed-dim">
+          <h4 className="mb-4 font-body text-[13px] font-semibold uppercase tracking-widest text-tertiary-fixed-dim">
             Contact
           </h4>
-          <ul className="space-y-4 font-body text-body-md text-inverse-on-surface/80">
+          <ul className="space-y-3 font-body text-[15px] text-inverse-on-surface/80">
             <li className="flex gap-3">
-              <MapPin size={18} className="mt-1 shrink-0 text-tertiary-fixed-dim" />
+              <MapPin size={18} className="mt-0.5 shrink-0 text-tertiary-fixed-dim" />
               <div>
                 <p>
                   {brand.contact.address.lineOne}
@@ -74,15 +75,15 @@ export function Footer() {
                   href={brand.contact.address.mapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-inverse-on-surface/20 px-3 py-1 font-body text-label-md font-semibold uppercase tracking-widest text-tertiary-fixed-dim transition-colors hover:border-tertiary-fixed-dim hover:bg-inverse-on-surface/5"
+                  className="mt-1.5 inline-flex items-center gap-1 text-[13px] font-semibold uppercase tracking-widest text-tertiary-fixed-dim transition-colors hover:text-inverse-on-surface"
                 >
                   Open in Maps
-                  <ArrowUpRight size={14} />
+                  <ArrowUpRight size={13} />
                 </a>
               </div>
             </li>
             <li className="flex gap-3">
-              <Mail size={18} className="mt-1 shrink-0 text-tertiary-fixed-dim" />
+              <Mail size={18} className="mt-0.5 shrink-0 text-tertiary-fixed-dim" />
               <a
                 href={`mailto:${brand.contact.email}`}
                 className="hover:text-tertiary-fixed-dim transition-colors"
@@ -90,30 +91,22 @@ export function Footer() {
                 {brand.contact.email}
               </a>
             </li>
-            <li className="flex gap-3">
-              <Phone size={18} className="mt-1 shrink-0 text-tertiary-fixed-dim" />
-              <div className="flex flex-col gap-1">
-                {brand.contact.phones.map((p) => (
-                  <a
-                    key={p}
-                    href={`tel:${p.replace(/[^+\d]/g, "")}`}
-                    className="hover:text-tertiary-fixed-dim transition-colors"
-                  >
-                    {p}
-                  </a>
-                ))}
-              </div>
-            </li>
           </ul>
         </div>
       </div>
 
       <div className="border-t border-inverse-on-surface/10">
-        <div className="mx-auto w-full max-w-7xl px-5 py-6 text-inverse-on-surface/60 md:px-8 lg:px-margin-desktop">
-          <p className="font-body text-sm">
-            © {new Date().getFullYear()} {brand.name}. Registered NGO
-            under Section 8. All rights reserved.
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-5 md:px-8 lg:px-margin-desktop">
+          <p className="font-body text-[13px] text-inverse-on-surface/50">
+            &copy; {new Date().getFullYear()} {brand.name}. Registered NGO
+            under Section 8.
           </p>
+          <Link
+            href="/privacy-policy"
+            className="font-body text-[13px] text-inverse-on-surface/50 transition-colors hover:text-tertiary-fixed-dim"
+          >
+            Privacy Policy
+          </Link>
         </div>
       </div>
     </footer>

@@ -3,7 +3,9 @@ import { DonateHero } from "@/components/donate/hero";
 import { WhyDonations } from "@/components/donate/why-donations";
 import { WhatDonationsSupport } from "@/components/donate/what-supports";
 import { BankDetails } from "@/components/donate/bank-details";
+import { ContactTrustee } from "@/components/donate/contact-trustee";
 import { ContactInfo } from "@/components/donate/contact-info";
+import { LocationSection } from "@/components/donate/location-section";
 import { NgoDetails } from "@/components/donate/ngo-details";
 
 export const metadata: Metadata = {
@@ -19,7 +21,9 @@ export default function DonatePage() {
       <WhyDonations />
       <WhatDonationsSupport />
       <BankDetails />
+      <ContactTrustee />
       <ContactInfo />
+      <LocationSection />
       <NgoDetails />
     </>
   );

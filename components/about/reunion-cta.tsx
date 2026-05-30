@@ -17,7 +17,7 @@ export function ReunionCta() {
             voice, you belong here.
           </p>
           <div className="flex flex-wrap gap-4">
-            <Link href="/donate">
+            <Link href="/donate#contact-trustee">
               <Button variant="secondary" size="md">
                 Become a Volunteer
               </Button>

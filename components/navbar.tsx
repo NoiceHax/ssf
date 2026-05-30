@@ -12,6 +12,7 @@ const navItems = [
   { label: "Home", href: "/" },
   { label: "Our Story", href: "/about" },
   { label: "Events", href: "/events" },
+  { label: "Upcoming", href: "/upcoming" },
   { label: "Contact", href: "/donate" },
 ];
 
@@ -70,7 +71,7 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          <Link href="/donate" className="hidden md:inline-flex md:translate-x-2 lg:translate-x-3">
+          <Link href="/donate#bank-details" className="hidden md:inline-flex md:translate-x-2 lg:translate-x-3">
             <Button variant="primary" size="sm">
               Donate
             </Button>
@@ -109,7 +110,7 @@ export function Navbar() {
                 </Link>
               );
             })}
-            <Link href="/donate" className="mt-2">
+            <Link href="/donate#bank-details" className="mt-2">
               <Button variant="primary" size="md" className="w-full">
                 Donate
               </Button>

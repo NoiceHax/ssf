@@ -21,10 +21,10 @@ export function EventsGridClient({ events }: { events: SiteEvent[] }) {
     <>
       <ul
         role="list"
-        className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 md:gap-gutter lg:gap-10"
+        className="grid grid-cols-1 items-stretch gap-6 sm:gap-8 md:grid-cols-2 md:gap-gutter lg:gap-10"
       >
         {shown.map((event, i) => (
-          <li key={event.id} className="flex">
+          <li key={event.id} className="flex w-full min-w-0">
             <EventCard event={event} priority={i < 2} />
           </li>
         ))}

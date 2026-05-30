@@ -1,4 +1,5 @@
 import manifest from "./events-manifest.json";
+import { manualEvents } from "./manual-events";
 
 export type SiteEvent = {
   id: string;
@@ -11,7 +12,16 @@ export type SiteEvent = {
   description?: string[];
 };
 
-const events: SiteEvent[] = manifest as SiteEvent[];
+const manifestEvents = manifest as SiteEvent[];
+const manifestIds = new Set(manifestEvents.map((e) => e.id));
+
+// Merge auto-discovered events with the hand-listed ones. The generated
+// manifest always wins: if an event's photos get uploaded later, its manifest
+// entry supersedes the manual placeholder of the same id. Sorted newest-first.
+const events: SiteEvent[] = [
+  ...manifestEvents,
+  ...manualEvents.filter((e) => !manifestIds.has(e.id)),
+].sort((a, b) => b.eventNumber - a.eventNumber);
 
 export function getAllEvents(): SiteEvent[] {
   return events;
