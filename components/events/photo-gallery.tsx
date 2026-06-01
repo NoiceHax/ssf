@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useEffect } from "react";
 
 type PhotoGalleryProps = {
   /** Array of image paths (e.g. from SiteEvent.galleryImages). */
@@ -13,8 +16,18 @@ type PhotoGalleryProps = {
  * Auto-sliding photo marquee (same mechanism as the testimonials carousel):
  * the list is duplicated and translated -50% on an infinite loop, pausing on
  * hover. Items are sized to a fixed box so layout shift is zero.
+ *
+ * Images use eager loading + mount-time preload because lazy loading does not
+ * work reliably inside CSS transform marquees (items never stay in viewport).
  */
 export function PhotoGallery({ photos, eventTitle, ariaLabel }: PhotoGalleryProps) {
+  useEffect(() => {
+    for (const src of photos) {
+      const img = new window.Image();
+      img.src = src;
+    }
+  }, [photos]);
+
   if (photos.length === 0) return null;
 
   // Duplicate the list so the marquee loops seamlessly (translate -50%).
@@ -42,7 +55,8 @@ export function PhotoGallery({ photos, eventTitle, ariaLabel }: PhotoGalleryProp
               alt={`${eventTitle ?? "Event"} photo ${(i % photos.length) + 1}`}
               fill
               sizes="(max-width: 640px) 400px, (max-width: 768px) 480px, (max-width: 1024px) 640px, 720px"
-              loading="lazy"
+              loading="eager"
+              priority={i === 0}
               className="object-cover"
             />
           </li>
