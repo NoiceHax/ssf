@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 
 const items = [
   {
-    year: "1998 to 2005",
+    year: "1989 to 2005",
     title: "The Promise",
     description:
       "A tight-knit group of friends at government high schools in rural Karnataka bond over shared dreams and a common background.",

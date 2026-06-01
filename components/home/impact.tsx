@@ -9,7 +9,7 @@ const stats = [
   },
   {
     icon: GraduationCap,
-    value: "1000+",
+    value: "10000+",
     label: "Students Supported",
   },
   {

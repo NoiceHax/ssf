@@ -23,7 +23,7 @@ export function FoundersStory() {
             </h2>
             <div className="space-y-6 font-body text-body-md text-on-surface-variant">
               <p>
-                It began in 1998, in a small classroom where all 10th-graders
+                It began in 1989, in a small classroom where all 10th-graders
                 shared wooden benches and had a vision for a better world.
                 They promised each other that one day, they would return to
                 their roots and give back to the soil that nurtured them.

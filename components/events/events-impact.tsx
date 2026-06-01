@@ -9,12 +9,12 @@ const stats = [
   },
   {
     icon: GraduationCap,
-    value: "1000+",
+    value: "10000+",
     label: "Students Supported",
   },
   {
     icon: Eye,
-    value: "340+",
+    value: "7000+",
     label: "Patients Screened",
   },
   {
