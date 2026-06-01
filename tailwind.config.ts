@@ -126,7 +126,7 @@ const config: Config = {
       animation: {
         shimmer: "shimmer 2s linear infinite",
         "fade-in-up": "fade-in-up 0.6s ease-out both",
-        marquee: "marquee 60s linear infinite",
+        marquee: "marquee 180s linear infinite",
       },
     },
   },

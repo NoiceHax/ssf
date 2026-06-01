@@ -22,6 +22,7 @@ export function EventCard({ event, priority = false }: EventCardProps) {
             src={event.coverImage}
             alt={`${event.title} cover`}
             fill
+            unoptimized
             sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
             loading={priority ? "eager" : "lazy"}
             priority={priority}

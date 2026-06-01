@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type PhotoGalleryProps = {
   /** Array of image paths (e.g. from SiteEvent.galleryImages). */
@@ -12,26 +12,46 @@ type PhotoGalleryProps = {
   ariaLabel?: string;
 };
 
+/** How many unique photos to load per batch. */
+const BATCH_SIZE = 8;
+/** Pause between batches so the browser is not flooded with requests. */
+const BATCH_PAUSE_MS = 2500;
+
 /**
- * Auto-sliding photo marquee (same mechanism as the testimonials carousel):
- * the list is duplicated and translated -50% on an infinite loop, pausing on
- * hover. Items are sized to a fixed box so layout shift is zero.
- *
- * Images use eager loading + mount-time preload because lazy loading does not
- * work reliably inside CSS transform marquees (items never stay in viewport).
+ * Auto-sliding photo marquee. Images load in batches (8 at a time, then wait)
+ * and use `unoptimized` because they are already on the CDN.
  */
 export function PhotoGallery({ photos, eventTitle, ariaLabel }: PhotoGalleryProps) {
+  const [loadCount, setLoadCount] = useState(() =>
+    Math.min(BATCH_SIZE, photos.length)
+  );
+
   useEffect(() => {
-    for (const src of photos) {
-      const img = new window.Image();
-      img.src = src;
-    }
+    let cancelled = false;
+    let loaded = Math.min(BATCH_SIZE, photos.length);
+    setLoadCount(loaded);
+
+    const scheduleNextBatch = () => {
+      if (cancelled || loaded >= photos.length) return;
+
+      window.setTimeout(() => {
+        if (cancelled) return;
+        loaded = Math.min(loaded + BATCH_SIZE, photos.length);
+        setLoadCount(loaded);
+        scheduleNextBatch();
+      }, BATCH_PAUSE_MS);
+    };
+
+    scheduleNextBatch();
+
+    return () => {
+      cancelled = true;
+    };
   }, [photos]);
 
-  if (photos.length === 0) return null;
+  const loop = useMemo(() => [...photos, ...photos], [photos]);
 
-  // Duplicate the list so the marquee loops seamlessly (translate -50%).
-  const loop = [...photos, ...photos];
+  if (photos.length === 0) return null;
 
   return (
     <div
@@ -39,28 +59,39 @@ export function PhotoGallery({ photos, eventTitle, ariaLabel }: PhotoGalleryProp
       role="region"
       aria-label={ariaLabel ?? "Event photo gallery"}
     >
-      {/* Edge fade */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-surface to-transparent md:w-32" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-surface to-transparent md:w-32" />
 
       <ul className="flex w-max gap-4 animate-marquee group-hover:[animation-play-state:paused] md:gap-6">
-        {loop.map((src, i) => (
-          <li
-            key={`${src}-${i}`}
-            aria-hidden={i >= photos.length ? "true" : undefined}
-            className="relative h-[300px] w-[400px] shrink-0 overflow-hidden bg-surface-container-high sm:h-[360px] sm:w-[480px] md:h-[440px] md:w-[640px] lg:h-[480px] lg:w-[720px]"
-          >
-            <Image
-              src={src}
-              alt={`${eventTitle ?? "Event"} photo ${(i % photos.length) + 1}`}
-              fill
-              sizes="(max-width: 640px) 400px, (max-width: 768px) 480px, (max-width: 1024px) 640px, 720px"
-              loading="eager"
-              priority={i === 0}
-              className="object-cover"
-            />
-          </li>
-        ))}
+        {loop.map((src, i) => {
+          const photoIndex = i % photos.length;
+          const ready = photoIndex < loadCount;
+
+          return (
+            <li
+              key={`${src}-${i}`}
+              aria-hidden={i >= photos.length ? "true" : undefined}
+              className="relative h-[300px] w-[400px] shrink-0 overflow-hidden bg-surface-container-high sm:h-[360px] sm:w-[480px] md:h-[440px] md:w-[640px] lg:h-[480px] lg:w-[720px]"
+            >
+              {ready ? (
+                <Image
+                  src={src}
+                  alt={`${eventTitle ?? "Event"} photo ${photoIndex + 1}`}
+                  fill
+                  unoptimized
+                  sizes="(max-width: 640px) 400px, (max-width: 768px) 480px, (max-width: 1024px) 640px, 720px"
+                  priority={photoIndex === 0}
+                  className="object-cover"
+                />
+              ) : (
+                <div
+                  className="absolute inset-0 animate-pulse bg-surface-container-high"
+                  aria-hidden="true"
+                />
+              )}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

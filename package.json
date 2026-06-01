@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "node scripts/generate-events.mjs && next dev",
+    "dev": "node scripts/generate-events.mjs --quick --skip-if-present && next dev",
     "build": "node scripts/generate-events.mjs && next build",
+    "generate-events": "node scripts/generate-events.mjs",
+    "generate-events:quick": "node scripts/generate-events.mjs --quick --skip-if-present",
     "start": "next start",
     "lint": "next lint"
   },

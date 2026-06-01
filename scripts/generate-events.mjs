@@ -9,14 +9,11 @@
  *   GitHub repo  ->  GitHub API (discovery)   ->  manifest
  *   GitHub repo  ->  Statically CDN (delivery) ->  <Image src=...>
  *
- * Folder names are the single source of truth. Drop a new folder like
- * "E27 Event Name" with img_001.webp, img_002.webp into the repo, push, and
- * redeploy — the event appears automatically. No code changes, no manual paths.
- *
- * Run: node scripts/generate-events.mjs
+ * Flags:
+ *   --quick            Skip CDN description fetches (fast dev startup)
+ *   --skip-if-present  Keep existing manifest when GitHub is unreachable
  *
  * Optional: set GITHUB_TOKEN to raise the GitHub API rate limit (60/hr -> 5000/hr).
- * NOTE: env defaults below are kept in sync with src/config/cdn.ts.
  */
 
 import fs from "node:fs";
@@ -27,11 +24,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, "..");
 const OUT_FILE = path.join(ROOT, "src", "data", "events-manifest.json");
 
+const args = new Set(process.argv.slice(2));
+const QUICK = args.has("--quick");
+const SKIP_IF_PRESENT = args.has("--skip-if-present");
+
 const GITHUB_USERNAME = process.env.NEXT_PUBLIC_GH_USERNAME ?? "noicehax";
 const GITHUB_REPO = process.env.NEXT_PUBLIC_GH_REPO ?? "ssfimages";
 const GITHUB_BRANCH = process.env.NEXT_PUBLIC_GH_BRANCH ?? "main";
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
 const EVENTS_PATH = "events";
+const FETCH_TIMEOUT_MS = 15_000;
 
 const CDN_BASE_URL = `https://cdn.statically.io/gh/${GITHUB_USERNAME}/${GITHUB_REPO}/${GITHUB_BRANCH}`;
 const GITHUB_TREE_API = `https://api.github.com/repos/${GITHUB_USERNAME}/${GITHUB_REPO}/git/trees/${GITHUB_BRANCH}?recursive=1`;
@@ -43,7 +45,6 @@ const DATE_RE =
 const DESCRIPTION_FILES = ["description.txt", "description.md"];
 
 function normalize(s) {
-  // Collapse all whitespace (incl. non-breaking spaces) and trim.
   return s.replace(/[\s\u00a0]+/g, " ").trim();
 }
 
@@ -77,6 +78,60 @@ function parseDescription(raw) {
   return paragraphs.length > 0 ? paragraphs : undefined;
 }
 
+function readExistingManifest() {
+  if (!fs.existsSync(OUT_FILE)) return null;
+  try {
+    const existing = JSON.parse(fs.readFileSync(OUT_FILE, "utf8"));
+    return Array.isArray(existing) && existing.length > 0 ? existing : null;
+  } catch {
+    return null;
+  }
+}
+
+function keepExistingManifest(reason) {
+  const existing = readExistingManifest();
+  if (existing) {
+    console.warn(
+      `[generate-events] ${reason} Keeping existing manifest (${existing.length} events).`
+    );
+    return true;
+  }
+  return false;
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = FETCH_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, { ...options, signal: controller.signal });
+  } catch (err) {
+    if (err.name === "AbortError") {
+      throw new Error(`timed out after ${timeoutMs}ms`);
+    }
+    throw err;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function fetchWithRetry(fn, { retries = 3, delayMs = 2000 } = {}) {
+  let lastErr;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      lastErr = err;
+      if (attempt < retries) {
+        console.warn(
+          `[generate-events] Attempt ${attempt}/${retries} failed: ${err.message}. Retrying…`
+        );
+        await new Promise((r) => setTimeout(r, delayMs * attempt));
+      }
+    }
+  }
+  throw lastErr;
+}
+
 async function fetchFileList() {
   const headers = {
     Accept: "application/vnd.github+json",
@@ -84,7 +139,7 @@ async function fetchFileList() {
   };
   if (GITHUB_TOKEN) headers.Authorization = `Bearer ${GITHUB_TOKEN}`;
 
-  const res = await fetch(GITHUB_TREE_API, { headers });
+  const res = await fetchWithTimeout(GITHUB_TREE_API, { headers });
   if (!res.ok) {
     throw new Error(`GitHub tree API responded ${res.status} ${res.statusText}`);
   }
@@ -97,7 +152,6 @@ async function fetchFileList() {
       "[generate-events] WARNING: GitHub tree was truncated (>100k entries). Some events may be missing."
     );
   }
-  // blobs only -> repo-relative paths, e.g. "events/E01 Foo/img_001.webp"
   return data.tree
     .filter((node) => node.type === "blob" && typeof node.path === "string")
     .map((node) => node.path);
@@ -108,48 +162,64 @@ async function fetchDescription(folder, files) {
     const rel = `${EVENTS_PATH}/${folder}/${name}`;
     if (!files.includes(rel)) continue;
     try {
-      const res = await fetch(cdnUrl(rel));
+      const res = await fetchWithTimeout(cdnUrl(rel));
       if (!res.ok) continue;
       const parsed = parseDescription(await res.text());
       if (parsed) return parsed;
     } catch {
-      // ignore – descriptions are optional
+      // descriptions are optional
     }
   }
   return undefined;
 }
 
 async function generate() {
+  const cached = readExistingManifest();
+  if (SKIP_IF_PRESENT && cached) {
+    console.log(
+      `[generate-events] Using cached manifest (${cached.length} events, --skip-if-present).`
+    );
+    return;
+  }
+
+  console.log(
+    `[generate-events] Fetching ${GITHUB_USERNAME}/${GITHUB_REPO}@${GITHUB_BRANCH}…`
+  );
+
   let files;
   try {
-    files = await fetchFileList();
+    files = await fetchWithRetry(() => fetchFileList());
   } catch (err) {
     console.warn(
-      `[generate-events] Could not reach the assets repo (${GITHUB_USERNAME}/${GITHUB_REPO}@${GITHUB_BRANCH}): ${err.message}`
+      `[generate-events] Could not reach the assets repo: ${err.message}`
     );
+    if (keepExistingManifest("GitHub unreachable.")) return;
     console.warn("[generate-events] Writing an empty manifest so the build still succeeds.");
     fs.writeFileSync(OUT_FILE, "[]", "utf8");
     return;
   }
 
-  // Group image files by their top-level event folder (events/<folder>/<file>).
   const prefix = `${EVENTS_PATH}/`;
   const byFolder = new Map();
   for (const file of files) {
     if (!file.startsWith(prefix)) continue;
     const rest = file.slice(prefix.length);
     const slashIdx = rest.indexOf("/");
-    if (slashIdx === -1) continue; // file directly under events/, not in a folder
+    if (slashIdx === -1) continue;
     const folder = rest.slice(0, slashIdx);
     const fileName = rest.slice(slashIdx + 1);
-    if (fileName.includes("/")) continue; // ignore nested subfolders
+    if (fileName.includes("/")) continue;
     if (!byFolder.has(folder)) byFolder.set(folder, []);
     byFolder.get(folder).push(fileName);
   }
 
   const events = [];
+  const folders = [...byFolder.keys()];
+  console.log(`[generate-events] Found ${folders.length} event folders.`);
 
-  for (const [folder, fileNames] of byFolder) {
+  for (let i = 0; i < folders.length; i++) {
+    const folder = folders[i];
+    const fileNames = byFolder.get(folder);
     const cleaned = normalize(folder);
     const match = cleaned.match(FOLDER_RE);
     if (!match) continue;
@@ -172,10 +242,11 @@ async function generate() {
 
     if (imageFiles.length === 0) continue;
 
-    // First image = cover, the rest make up the gallery.
     const gallery = imageFiles.map((f) => cdnUrl(`${EVENTS_PATH}/${folder}/${f}`));
     const cover = gallery[0] ?? null;
-    const description = await fetchDescription(folder, files);
+    const description = QUICK
+      ? undefined
+      : await fetchDescription(folder, files);
 
     const id = `E${pad(eventNumber)}`;
     const slug = slugify(`${id}-${rest}`);
@@ -190,13 +261,18 @@ async function generate() {
       galleryImages: gallery,
       ...(description && { description }),
     });
+
+    if (!QUICK && (i + 1) % 10 === 0) {
+      console.log(`[generate-events] Processed ${i + 1}/${folders.length} folders…`);
+    }
   }
 
   events.sort((a, b) => b.eventNumber - a.eventNumber);
 
   fs.writeFileSync(OUT_FILE, JSON.stringify(events, null, 2), "utf8");
   console.log(
-    `[generate-events] wrote ${events.length} events to ${path.relative(ROOT, OUT_FILE)} (source: ${GITHUB_USERNAME}/${GITHUB_REPO}@${GITHUB_BRANCH})`
+    `[generate-events] wrote ${events.length} events to ${path.relative(ROOT, OUT_FILE)}` +
+      (QUICK ? " (quick mode, descriptions skipped)" : "")
   );
 }
 

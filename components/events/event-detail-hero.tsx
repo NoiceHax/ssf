@@ -13,6 +13,7 @@ export function EventDetailHero({ event }: { event: SiteEvent }) {
             src={event.coverImage}
             alt={`${event.title} cover`}
             fill
+            unoptimized
             priority
             sizes="100vw"
             className="object-cover"
