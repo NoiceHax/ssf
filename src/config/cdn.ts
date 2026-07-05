@@ -1,7 +1,7 @@
 /**
  * Centralized CDN configuration.
  *
- * Event media lives in a dedicated GitHub repository and is served — for free —
+ * Event media lives in a dedicated GitHub repository and is served for free
  * through a CDN. NOTHING in the app should hardcode an image URL: every event
  * image URL is derived from `CDN_BASE_URL` below (the build-time discovery
  * script `scripts/generate-events.mjs` mirrors these same values from the same
@@ -9,16 +9,16 @@
  *
  *   GitHub repo  ->  CDN  ->  Next.js website
  *
- * DELIVERY: Statically.io (https://statically.io) — a free CDN that serves
+ * DELIVERY: Statically.io (https://statically.io), a free CDN that serves
  * files straight from GitHub with no repository size limit. (jsDelivr was the
  * original plan but enforces a hard 50 MB total-repo limit, which this 700 MB+
  * and growing library exceeds.)
  *
- * DISCOVERY: the GitHub REST "git tree" API (in the build script) — lists every
+ * DISCOVERY: the GitHub REST "git tree" API (in the build script), lists every
  * file regardless of repo size, so events are still auto-discovered.
  *
- * To point the site at a different repo/branch — or swap CDN providers (e.g.
- * Cloudflare Pages) — change the env vars / this one constant. No other code
+ * To point the site at a different repo/branch, or swap CDN providers (e.g.
+ * Cloudflare Pages), change the env vars / this one constant. No other code
  * changes are required because every URL flows from here.
  */
 

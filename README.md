@@ -1,4 +1,4 @@
-# Sneha Sammilana Foundation — Website
+# Sneha Sammilana Foundation, Website
 
 A production-quality Next.js implementation of the Sneha Sammilana
 Foundation marketing site, rebuilt from Stitch designs.
@@ -66,7 +66,7 @@ Until the real assets are dropped into `public/`, the `<Logo>` component
 gracefully falls back to a styled wordmark. Replace the files and the rest of
 the app picks them up automatically.
 
-## Event Media — GitHub + CDN
+## Event Media, GitHub + CDN
 
 Event photos are **not** stored in this repo. They live in a dedicated,
 free assets repository and are served through a CDN:
@@ -79,7 +79,7 @@ GitHub repo (e.g. noicehax/ssfimages)  ->  Statically CDN  ->  next/image
   URL derives from. Override the target repo/branch with env vars (see
   `.env.example`): `NEXT_PUBLIC_GH_USERNAME`, `NEXT_PUBLIC_GH_REPO`,
   `NEXT_PUBLIC_GH_BRANCH`.
-- **Delivery:** [Statically.io](https://statically.io) — a free CDN that serves
+- **Delivery:** [Statically.io](https://statically.io), a free CDN that serves
   files straight from GitHub with **no repo size limit**. (jsDelivr was the
   original plan but caps GitHub repos at 50 MB; this 700 MB+ library exceeds
   it.) Swapping CDN providers (e.g. Cloudflare Pages) is a one-line change to
@@ -87,7 +87,7 @@ GitHub repo (e.g. noicehax/ssfimages)  ->  Statically CDN  ->  next/image
 - **Discovery:** `scripts/generate-events.mjs` runs at build time (wired into
   `npm run dev`/`npm run build`). It enumerates the assets repo via the GitHub
   REST git-tree API and writes `src/data/events-manifest.json` with ready-made
-  CDN URLs. No filesystem access to the assets repo at runtime — works on
+  CDN URLs. No filesystem access to the assets repo at runtime, works on
   Vercel. Set `GITHUB_TOKEN` to raise the API rate limit if needed.
 - **Source of truth:** event folder names. Format `E<number> <Title> [date]`.
   The first image (natural sort) is the cover; the rest is the gallery.
@@ -99,7 +99,7 @@ GitHub repo (e.g. noicehax/ssfimages)  ->  Statically CDN  ->  next/image
 3. Add `img_001.webp`, `img_002.webp`, ...
 4. Push the assets repo and redeploy the site.
 
-The event appears automatically — no manual paths, no registration. A scaffold
+The event appears automatically, no manual paths, no registration. A scaffold
 for the assets repo lives in `ssfimages/` (move it out to its own GitHub repo).
 
 The events grid renders the latest 8 events and progressively loads older ones
@@ -114,6 +114,6 @@ with lazy loading to stay light even with many photo-heavy events.
   colors (e.g. `bg-surface-container-low`, `text-on-primary-container`) so the
   generated code reads close to the original intent.
 - All section transitions use a single `Reveal` component (in-view fade + rise)
-  rather than scattered Framer Motion calls — animations stay subtle.
+  rather than scattered Framer Motion calls, animations stay subtle.
 - Images are served via `next/image` with the Google-hosted Stitch URLs allowed
   in `next.config.mjs`.

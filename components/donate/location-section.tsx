@@ -34,7 +34,7 @@ export function LocationSection() {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Sneha Sammilana Foundation location — Sarjapura, Bengaluru"
+            title="Sneha Sammilana Foundation location, Sarjapura, Bengaluru"
             className="block w-full"
           />
         </div>

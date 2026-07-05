@@ -7,6 +7,7 @@
     "build": "node scripts/generate-events.mjs && next build",
     "generate-events": "node scripts/generate-events.mjs",
     "generate-events:quick": "node scripts/generate-events.mjs --quick --skip-if-present",
+    "admin": "node scripts/local-admin/server.mjs",
     "start": "next start",
     "lint": "next lint"
   },

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SSF Local Admin</title>
+    <link rel="stylesheet" href="/admin.css" />
+  </head>
+  <body>
+    <header class="header">
+      <div>
+        <h1>SSF Local Admin</h1>
+        <p class="subtitle">Local only · saved to <code>.local/</code> · never pushed to GitHub</p>
+      </div>
+      <div class="header-actions">
+        <a class="btn btn-ghost" href="http://localhost:3000/events" target="_blank" rel="noopener">Preview site ↗</a>
+        <button type="button" class="btn btn-primary" id="btn-new-event">+ New local event</button>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button type="button" class="tab active" data-tab="events">Past events</button>
+      <button type="button" class="tab" data-tab="upcoming">Upcoming events</button>
+    </nav>
+
+    <main>
+      <section id="panel-events" class="panel active">
+        <div class="stats" id="event-stats"></div>
+        <div class="layout">
+          <aside class="list-panel">
+            <input type="search" id="event-search" placeholder="Search events…" class="input" />
+            <ul id="event-list" class="event-list"></ul>
+          </aside>
+          <div class="editor-panel" id="event-editor">
+            <p class="empty">Select an event or create a new local draft.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="panel-upcoming" class="panel">
+        <div class="upcoming-toolbar">
+          <p>Overrides the upcoming-events section in dev. Stored in <code>.local/upcoming.json</code>.</p>
+          <div class="toolbar-actions">
+            <button type="button" class="btn btn-ghost" id="btn-reset-upcoming">Use repo defaults</button>
+            <button type="button" class="btn btn-primary" id="btn-add-upcoming">+ Add upcoming</button>
+            <button type="button" class="btn btn-primary" id="btn-save-upcoming">Save upcoming</button>
+          </div>
+        </div>
+        <div id="upcoming-list" class="upcoming-list"></div>
+      </section>
+    </main>
+
+    <div id="toast" class="toast hidden"></div>
+    <script src="/admin.js"></script>
+  </body>
+</html>

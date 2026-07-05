@@ -1,5 +1,5 @@
 /**
- * Testimonials — single source of truth.
+ * Testimonials, single source of truth.
  * Drop a new object in the array and it appears in the homepage marquee.
  */
 

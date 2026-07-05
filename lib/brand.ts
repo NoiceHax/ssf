@@ -11,6 +11,7 @@
   contact: {
     email: "snehasammilanafoundation@gmail.com",
     phones: [
+      "+91 98459 19905",
       "+91 99800 30440",
       "+91 94486 84989",
       "+91 70220 20811",
@@ -28,9 +29,13 @@
   registration: {
     type: "Section 8 Registered Foundation",
     regNo: "BKIIV337/2015-16",
-    taxExemption: " tax exemption under Section 80G",
+    registeredSince: "2016",
+    act: "Registered under Govt Act of 1996",
+    urd: "AAQTS8012AE20231",
+    taxExemption: "Tax exemption under Section 80G",
     pan: "",
   },
+  website: "https://snehasammilana.in",
 } as const;
 
 export type Brand = typeof brand;

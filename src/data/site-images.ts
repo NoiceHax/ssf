@@ -12,7 +12,7 @@ export const siteImages = {
 
   // ---- Events page ----
   // The events hero now derives from the latest event's cover image
-  // (see components/events/hero.tsx) — served via the jsDelivr CDN.
+  // (see components/events/hero.tsx), served via the jsDelivr CDN.
 
   // ---- Donate page ----
   donate_hero: "/donate_hero.png",

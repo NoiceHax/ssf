@@ -1,4 +1,5 @@
 import manifest from "./events-manifest.json";
+import { loadLocalEvents } from "./local-events-loader";
 import { manualEvents } from "./manual-events";
 
 export type SiteEvent = {
@@ -12,27 +13,45 @@ export type SiteEvent = {
   description?: string[];
 };
 
-const manifestEvents = manifest as SiteEvent[];
-const manifestIds = new Set(manifestEvents.map((e) => e.id));
+function buildEvents(): SiteEvent[] {
+  const manifestEvents = manifest as SiteEvent[];
+  const manifestIds = new Set(manifestEvents.map((e) => e.id));
 
-// Merge auto-discovered events with the hand-listed ones. The generated
-// manifest always wins: if an event's photos get uploaded later, its manifest
-// entry supersedes the manual placeholder of the same id. Sorted newest-first.
-const events: SiteEvent[] = [
-  ...manifestEvents,
-  ...manualEvents.filter((e) => !manifestIds.has(e.id)),
-].sort((a, b) => b.eventNumber - a.eventNumber);
+  // Merge auto-discovered events with the hand-listed ones. The generated
+  // manifest always wins: if an event's photos get uploaded later, its manifest
+  // entry supersedes the manual placeholder of the same id.
+  const merged = [
+    ...manifestEvents,
+    ...manualEvents.filter((e) => !manifestIds.has(e.id)),
+  ];
+
+  // Local admin overlay (dev only, gitignored `.local/events.json`) takes
+  // precedence over manifest/manual entries with the same id.
+  const localEvents = loadLocalEvents();
+  if (localEvents.length > 0) {
+    const localIds = new Set(localEvents.map((e) => e.id));
+    return [...localEvents, ...merged.filter((e) => !localIds.has(e.id))].sort(
+      (a, b) => b.eventNumber - a.eventNumber
+    );
+  }
+
+  return merged.sort((a, b) => b.eventNumber - a.eventNumber);
+}
 
 export function getAllEvents(): SiteEvent[] {
-  return events;
+  return buildEvents();
 }
 
 export function getEventBySlug(slug: string): SiteEvent | undefined {
-  return events.find((e) => e.slug === slug);
+  return getAllEvents().find((e) => e.slug === slug);
+}
+
+export function getEventById(id: string): SiteEvent | undefined {
+  return getAllEvents().find((e) => e.id === id);
 }
 
 export function getAllSlugs(): string[] {
-  return events.map((e) => e.slug);
+  return getAllEvents().map((e) => e.slug);
 }
 
 /**
@@ -43,6 +62,7 @@ export function getAdjacentEvents(slug: string): {
   newer?: SiteEvent;
   older?: SiteEvent;
 } {
+  const events = getAllEvents();
   const i = events.findIndex((e) => e.slug === slug);
   if (i === -1) return {};
   return {

@@ -33,7 +33,7 @@ export function WhyDonations() {
                   &ldquo;We make a living by what we get, but we make a life by what we give.&rdquo;
                 </p>
                 <footer className="mt-3 text-label-md uppercase tracking-widest text-secondary">
-                  — Winston Churchill
+                 , Winston Churchill
                 </footer>
               </blockquote>
             </div>

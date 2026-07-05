@@ -6,7 +6,7 @@ const items = [
     icon: BadgeCheck,
     label: "Registration",
     value: brand.registration.type,
-    note: `Reg. No. ${brand.registration.regNo}`,
+    note: `Reg. No. ${brand.registration.regNo} · Registered since ${brand.registration.registeredSince} · URD: ${brand.registration.urd}`,
   },
   {
     icon: FileText,

@@ -1,12 +1,8 @@
 import { Users, GraduationCap, Eye, UtensilsCrossed } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
+import { getAllEvents } from "@/src/data/events";
 
-const stats = [
-  {
-    icon: Users,
-    value: "45+",
-    label: "Community Initiatives",
-  },
+const otherStats = [
   {
     icon: GraduationCap,
     value: "10000+",
@@ -22,9 +18,19 @@ const stats = [
     value: "Weekly",
     label: "Food Service",
   },
-];
+] as const;
 
 export function EventsImpact() {
+  const eventCount = getAllEvents().length;
+  const stats = [
+    {
+      icon: Users,
+      value: `${eventCount}+`,
+      label: "Community Initiatives",
+    },
+    ...otherStats,
+  ];
+
   return (
     <section className="relative overflow-hidden bg-primary py-16 text-on-primary md:py-20 lg:py-24">
       <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-secondary-fixed opacity-10 blur-3xl" />

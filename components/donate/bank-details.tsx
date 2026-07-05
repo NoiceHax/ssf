@@ -143,7 +143,7 @@ function BankRow({ row }: { row: Row }) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      /* clipboard blocked — silently ignore */
+      /* clipboard blocked, silently ignore */
     }
   }
 

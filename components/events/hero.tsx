@@ -1,13 +1,15 @@
 import Image from "next/image";
 import { SectionEyebrow } from "@/components/ui/section";
-import { cdnUrl } from "@/src/config/cdn";
+import { getEventById } from "@/src/data/events";
+import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 
-// Fixed editorial hero image, served via the CDN (derived from CDN_BASE_URL).
-const heroImage = cdnUrl(
-  "events/E9 Distribution of Study Items in 15 Govt Schools for 1050 Students in Sarjapura Cluster 18-Jul-2017/IMG_1193.JPG"
-);
+/** Editorial hero, reuses the E09 event cover so the path stays in sync with the manifest. */
+const HERO_EVENT_ID = "E09";
 
 export function EventsHero() {
+  const heroEvent = getEventById(HERO_EVENT_ID);
+  const heroImage = heroEvent?.coverImage ?? null;
+
   return (
     <section className="relative overflow-hidden pt-16 pb-20 md:pt-24 md:pb-28 lg:pb-section-gap">
       <div className="mx-auto grid max-w-7xl grid-cols-12 items-center gap-gutter px-5 md:px-8 lg:px-margin-desktop">
@@ -24,14 +26,19 @@ export function EventsHero() {
         </div>
         <div className="relative col-span-12 mt-12 lg:col-span-5 lg:mt-0">
           <div className="relative aspect-[4/5] w-full overflow-hidden bg-surface-container-high">
-            <Image
-              src={heroImage}
-              alt="Students gathered for a school study-items distribution drive in Sarjapura, one of the foundation's annual gatherings."
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 40vw"
-              className="object-cover"
-            />
+            {heroImage ? (
+              <Image
+                src={heroImage}
+                alt="Students gathered for a school study-items distribution drive in Sarjapura, one of the foundation's annual gatherings."
+                fill
+                priority
+                unoptimized
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="object-cover"
+              />
+            ) : (
+              <ImagePlaceholder />
+            )}
           </div>
           <div className="pointer-events-none absolute -bottom-8 -left-8 -z-10 h-48 w-48 bg-secondary-fixed opacity-40" />
         </div>

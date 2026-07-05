@@ -1,12 +1,8 @@
 import { Users, GraduationCap, HeartHandshake, UtensilsCrossed } from "lucide-react";
 import { Reveal } from "@/components/ui/reveal";
+import { getAllEvents } from "@/src/data/events";
 
-const stats = [
-  {
-    icon: Users,
-    value: "55+",
-    label: "Community Initiatives",
-  },
+const otherStats = [
   {
     icon: GraduationCap,
     value: "2000+",
@@ -22,9 +18,19 @@ const stats = [
     value: "5k+",
     label: "Meals Distributed",
   },
-];
+] as const;
 
 export function ImpactMetrics() {
+  const eventCount = getAllEvents().length;
+  const stats = [
+    {
+      icon: Users,
+      value: `${eventCount}+`,
+      label: "Community Initiatives",
+    },
+    ...otherStats,
+  ];
+
   return (
     <section
       id="impact"

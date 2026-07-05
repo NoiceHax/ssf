@@ -2,10 +2,10 @@
  * Upcoming (future) events.
  *
  * Past events are auto-discovered from the GitHub assets repo, but future events
- * have no photos yet — so they're listed here by hand. Add an entry to announce
+ * have no photos yet, so they're listed here by hand. Add an entry to announce
  * an event; remove it (or move the photos into the assets repo) once it's done.
  *
- * Leaving the array empty is fine — the Upcoming Events section shows a tasteful
+ * Leaving the array empty is fine, the Upcoming Events section shows a tasteful
  * "nothing scheduled" state.
  */
 
@@ -31,6 +31,10 @@ export const upcomingEvents: UpcomingEvent[] = [
   // },
 ];
 
+import { loadLocalUpcomingEvents } from "./local-events-loader";
+
 export function getUpcomingEvents(): UpcomingEvent[] {
+  const local = loadLocalUpcomingEvents();
+  if (local.length > 0) return local;
   return upcomingEvents;
 }

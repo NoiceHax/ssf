@@ -12,11 +12,14 @@ next-env.d.ts
 # generated at build time
 src/data/events-manifest.json
 
-# event-media assets repo scaffold — belongs in its own GitHub repo, not here
+# event-media assets repo scaffold, belongs in its own GitHub repo, not here
 ssfimages/
 
 # vercel
 .vercel
+
+# local admin dashboard data (events, images, drafts, never commit)
+.local/
 
 # environment variables
 .env
