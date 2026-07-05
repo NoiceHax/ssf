@@ -14,7 +14,7 @@ const stats = [
   },
   {
     icon: Eye,
-    value: "7000+",
+    value: "2500+",
     label: "Patients Screened",
   },
   {

@@ -23,23 +23,17 @@ export function FoundersStory() {
             </h2>
             <div className="space-y-6 font-body text-body-md text-on-surface-variant">
               <p>
-                It began in 1989, in a small classroom where all 10th-graders
-                shared wooden benches and had a vision for a better world.
-                They promised each other that one day, they would return to
-                their roots and give back to the soil that nurtured them.
+                A tight-knit group of friends at government high schools in rural Bangalore bond over shared dreams and a common background.
+              </p>
+              <p className="font-semibold text-primary">Foundation Formed</p>
+              <p>
+                Sneha Sammilana Foundation is officially registered. The friends reunite, pooling resources to start the community helping hands.
               </p>
               <p>
-                Life took them on separate paths across continents and through
-                diverse careers but the bond of{" "}
-                <span className="italic text-secondary">Sneha</span> (Friendship)
-                never frayed. In 2015, during a chance reunion in their
-                hometown, they realised the promise they made at fifteen was
-                still waiting to be kept.
+                Life took us on separate paths across continents and through diverse careers but the bond of <span className="italic text-secondary">Sneha</span> (Friendship) never frayed. In 2015, during a chance reunion in their hometown, they realised the promise they made at fifteen was still waiting to be kept.
               </p>
               <p>
-                Sneha Sammilana was born that evening not from a business
-                plan, but from a heartfelt conversation, honoring the
-                legacy of their mentors and the needs of their community.
+                Sneha Sammilana was born that evening not from a business plan, but from a heartfelt conversation, honoring the legacy of our mentors and the needs of our community.
               </p>
             </div>
             <div className="mt-10 flex items-center gap-4">

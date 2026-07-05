@@ -20,7 +20,7 @@ export function Annadhanam() {
                 <p className="mt-4 max-w-2xl font-body text-body-md leading-relaxed text-on-surface-variant md:text-body-lg">
                   Sneha Sammilana Foundation organizes the distribution of free
                   meals every Saturday at Rama Temple, Sarjapura for
-                  underprivileged individuals and devotees. This sacred act of
+                  all devotees. This sacred act of
                   serving food symbolizes compassion, dignity, and community
                   spirit.
                 </p>
@@ -67,7 +67,7 @@ export function Annadhanam() {
                       Free Meals
                     </p>
                     <p className="mt-0.5 font-body text-body-md text-on-surface-variant">
-                      For underprivileged families &amp; devotees
+                      for all devotees
                     </p>
                   </div>
                 </div>

@@ -6,19 +6,19 @@ const items = [
     year: "1989 to 2005",
     title: "The Promise",
     description:
-      "A tight-knit group of friends at government high schools in rural Karnataka bond over shared dreams and a common background.",
+      "A tight-knit group of friends at government high schools in rural Bangalore bond over shared dreams and a common background.",
   },
   {
     year: "2015",
     title: "Foundation Formed",
     description:
-      "Sneha Sammilana Foundation is officially registered. The friends reunite, pooling resources to start the first scholarship fund.",
+      "Sneha Sammilana Foundation is officially registered. The friends reunite, pooling resources to start the community helping hands.",
   },
   {
-    year: "Present & Future",
-    title: "Deepening Our Roots",
+    year: "2015",
+    title: "The Reunion",
     description:
-      "Expanding our reach across the state with digital classrooms, modern healthcare camps, and a growing community of volunteers.",
+      "Life took us on separate paths across continents and through diverse careers but the bond of Sneha (Friendship) never frayed. In 2015, during a chance reunion in their hometown, they realised the promise they made at fifteen was still waiting to be kept. Sneha Sammilana was born that evening not from a business plan, but from a heartfelt conversation, honoring the legacy of our mentors and the needs of our community.",
   },
 ];
 

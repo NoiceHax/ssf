@@ -4,22 +4,22 @@ import { Reveal } from "@/components/ui/reveal";
 const stats = [
   {
     icon: Users,
-    value: "45+",
+    value: "55+",
     label: "Community Initiatives",
   },
   {
     icon: GraduationCap,
-    value: "10000+",
+    value: "2000+",
     label: "Students Supported",
   },
   {
     icon: HeartHandshake,
-    value: "250+",
+    value: "25+",
     label: "Healthcare Camps",
   },
   {
     icon: UtensilsCrossed,
-    value: "50k+",
+    value: "5k+",
     label: "Meals Distributed",
   },
 ];

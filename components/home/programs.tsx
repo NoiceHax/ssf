@@ -22,7 +22,7 @@ const programs: Program[] = [
     icon: BookOpenText,
     title: "Education Support",
     description:
-      "Providing scholarships, school kits, and digital literacy programs for children in government schools across Karnataka.",
+      "Providing scholarships, school kits, and digital literacy programs for children in government schools across Bangalore surroundings.",
     tone: "primary",
   },
   {
@@ -36,15 +36,8 @@ const programs: Program[] = [
     icon: Soup,
     title: "Food & Annadhanam",
     description:
-      "Regular meal distribution drives and nutritious food support for marginalized families and daily wage earners.",
+      "Regular meal distribution drives at the Ram Temple in Sarjapur, serving nutritious food to devotees and families in need.",
     tone: "primary",
-  },
-  {
-    icon: HomeIcon,
-    title: "Community Welfare",
-    description:
-      "Sanitation projects, water filter installations, and infrastructure support for rural community centers.",
-    tone: "secondary",
   },
   {
     icon: HeartPulse,
