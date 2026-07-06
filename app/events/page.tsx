@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { EventsCarousel } from "@/components/events/events-carousel";
 import { EventsHero } from "@/components/events/hero";
 import { EventsImpact } from "@/components/events/events-impact";
 import { Annadhanam } from "@/components/events/annadhanam";
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
 export default function EventsPage() {
   return (
     <>
-      <EventsCarousel />
       <EventsHero />
       <EventsImpact />
       <Annadhanam />

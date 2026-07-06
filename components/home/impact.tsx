@@ -5,7 +5,7 @@ import { getAllEvents } from "@/src/data/events";
 const otherStats = [
   {
     icon: GraduationCap,
-    value: "2000+",
+    value: "4500+",
     label: "Students Supported",
   },
   {

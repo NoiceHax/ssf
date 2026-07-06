@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { SectionEyebrow } from "@/components/ui/section";
+import { EventsCarousel } from "@/components/events/events-carousel";
 import { getEventById } from "@/src/data/events";
 import { ImagePlaceholder } from "@/components/ui/image-placeholder";
 
-/** Editorial hero, reuses the E09 event cover so the path stays in sync with the manifest. */
+/** Editorial hero cover on desktop — stays in sync with the manifest. */
 const HERO_EVENT_ID = "E09";
 
 export function EventsHero() {
@@ -25,7 +26,10 @@ export function EventsHero() {
           </p>
         </div>
         <div className="relative col-span-12 mt-12 lg:col-span-5 lg:mt-0">
-          <div className="relative aspect-[4/5] w-full overflow-hidden bg-surface-container-high">
+          <div className="lg:hidden">
+            <EventsCarousel />
+          </div>
+          <div className="relative hidden aspect-[4/5] w-full overflow-hidden bg-surface-container-high lg:block">
             {heroImage ? (
               <Image
                 src={heroImage}
@@ -33,7 +37,7 @@ export function EventsHero() {
                 fill
                 priority
                 unoptimized
-                sizes="(max-width: 1024px) 100vw, 40vw"
+                sizes="40vw"
                 className="object-cover"
               />
             ) : (
