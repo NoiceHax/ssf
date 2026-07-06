@@ -40,11 +40,7 @@ export function TrusteePhones({ variant = "all" }: TrusteePhonesProps) {
           >
             <Phone size={14} className="shrink-0 text-secondary" aria-hidden />
             <span className="min-w-0 flex-1">{phone}</span>
-            {index === 0 && (
-              <span className="shrink-0 font-body text-label-md uppercase tracking-widest text-secondary">
-                Primary
-              </span>
-            )}
+            {/* Primary badge removed intentionally */}
           </a>
         </li>
       ))}
