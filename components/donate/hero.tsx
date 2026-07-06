@@ -21,7 +21,7 @@ export function DonateHero() {
           <SectionEyebrow className="text-secondary-fixed">Support Our Legacy</SectionEyebrow>
           <h1
             className="mb-4 mt-3 font-headline text-4xl leading-tight sm:text-5xl md:mb-6 md:mt-4 md:text-6xl lg:text-headline-display"
-            style={{ color: "#F28C28" }}
+            style={{ color: "#FFF4E6" }}
           >
             Join the Journey
           </h1>
