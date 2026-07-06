@@ -8,7 +8,7 @@ export function Testimonials() {
   return (
     <section
       aria-labelledby="testimonials-heading"
-      className="overflow-hidden bg-primary py-20 text-on-primary md:py-28 lg:py-section-gap"
+      className="overflow-hidden bg-primary py-20 text-on-primary md:py-28 lg:py-20"
     >
       <div className="mx-auto mb-12 max-w-7xl px-5 md:mb-16 md:px-8 lg:px-margin-desktop">
         <span className="font-body text-label-md font-semibold uppercase tracking-widest text-secondary-fixed-dim">

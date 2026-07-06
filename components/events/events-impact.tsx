@@ -32,7 +32,7 @@ export function EventsImpact() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-primary py-16 text-on-primary md:py-20 lg:py-24">
+    <section className="relative overflow-hidden section-py bg-primary text-on-primary">
       <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-secondary-fixed opacity-10 blur-3xl" />
       <div className="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-secondary-fixed opacity-10 blur-3xl" />
 

@@ -30,7 +30,7 @@ const pillars: Pillar[] = [
 
 export function Compass() {
   return (
-    <section className="py-20 md:py-28 lg:py-section-gap">
+    <section className="section-py">
       <div className="mx-auto max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
         <Reveal className="mb-12 text-center md:mb-20">
           <h2 className="mb-4 font-headline text-3xl md:text-4xl lg:text-headline-lg text-primary">

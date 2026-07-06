@@ -34,7 +34,7 @@ export function ImpactMetrics() {
   return (
     <section
       id="impact"
-      className="relative overflow-hidden bg-surface-container-low py-20 md:py-28 lg:py-section-gap"
+      className="relative overflow-hidden bg-surface-container-low section-py"
     >
       {/* warm ambient accents */}
       <div className="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-secondary-fixed opacity-40 blur-3xl" />

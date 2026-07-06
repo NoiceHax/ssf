@@ -33,6 +33,15 @@
   .editorial-shadow {
     box-shadow: 0 20px 50px -12px rgba(0, 32, 69, 0.06);
   }
+  .section-py {
+    @apply py-8 md:py-16 lg:py-20;
+  }
+  .section-pb {
+    @apply pb-8 md:pb-16 lg:pb-20;
+  }
+  .section-pt {
+    @apply pt-8 md:pt-16 lg:pt-20;
+  }
   .skeleton {
     @apply relative overflow-hidden bg-surface-container-high;
   }

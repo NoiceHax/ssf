@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export function VolunteerCta() {
   return (
-    <section className="px-5 pb-20 md:px-8 md:pb-28 lg:px-margin-desktop lg:pb-section-gap">
+    <section className="px-5 pb-20 md:px-8 md:pb-28 lg:px-margin-desktop lg:pb-20">
       <Reveal className="mx-auto max-w-7xl">
         <div className="relative overflow-hidden rounded-3xl bg-primary p-8 text-on-primary sm:p-12 md:p-16 lg:p-24 xl:p-32">
           <div className="pointer-events-none absolute right-0 top-0 h-full w-1/2 translate-x-1/3 rounded-full bg-secondary-fixed opacity-20 blur-3xl" />

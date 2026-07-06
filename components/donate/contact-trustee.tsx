@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AlertCircle, CheckCircle2, Phone, Send } from "lucide-react";
-import { brand } from "@/lib/brand";
+import { AlertCircle, Send } from "lucide-react";
+import { Toast } from "@/components/ui/toast";
+import { TrusteePhones } from "@/components/ui/trustee-phones";
+import { motion } from "framer-motion";
 
-const trusteePhones = brand.contact.phones.slice(0, 3);
-
-// Client-side rate limit (no backend yet): cap how many messages can be sent
-// within a rolling time window. Persisted so a refresh can't bypass it.
 const MAX_MESSAGES = 3;
-const WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+const WINDOW_MS = 10 * 60 * 1000;
 const STORAGE_KEY = "ssf-contact-submissions";
 
 function loadTimestamps(): number[] {
@@ -31,14 +29,16 @@ function saveTimestamps(timestamps: number[]) {
   try {
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(timestamps));
   } catch {
-    // ignore storage failures (private mode, quota, etc.)
+    // ignore storage failures
   }
 }
 
 export function ContactTrustee() {
-  const [submitted, setSubmitted] = useState(false);
+  const [toastVisible, setToastVisible] = useState(false);
   const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
+  const [submitting, setSubmitting] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const isCoolingDown = cooldownUntil !== null && now < cooldownUntil;
   const secondsLeft = isCoolingDown
@@ -51,8 +51,21 @@ export function ContactTrustee() {
     return () => window.clearInterval(id);
   }, [isCoolingDown]);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  useEffect(() => {
+    if (!toastVisible) return;
+    const id = window.setTimeout(() => setToastVisible(false), 5000);
+    return () => window.clearTimeout(id);
+  }, [toastVisible]);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    const form = e.currentTarget;
+    setFormError(null);
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
 
     const timestamps = loadTimestamps();
     if (timestamps.length >= MAX_MESSAGES) {
@@ -62,10 +75,36 @@ export function ContactTrustee() {
       return;
     }
 
-    const next = [...timestamps, Date.now()];
-    saveTimestamps(next);
-    setCooldownUntil(null);
-    setSubmitted(true);
+    const data = new FormData(form);
+    const name = String(data.get("name") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
+    const phone = String(data.get("phone") ?? "").trim();
+    const message = String(data.get("message") ?? "").trim();
+
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, phone, message }),
+      });
+
+      const payload = (await res.json()) as { error?: string };
+      if (!res.ok) {
+        throw new Error(payload.error ?? "Could not send your message.");
+      }
+
+      saveTimestamps([...timestamps, Date.now()]);
+      setCooldownUntil(null);
+      form.reset();
+      setToastVisible(true);
+    } catch (err) {
+      setFormError(
+        err instanceof Error ? err.message : "Could not send your message."
+      );
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   function formatCooldown(seconds: number) {
@@ -75,65 +114,52 @@ export function ContactTrustee() {
   }
 
   return (
-    <section
-      id="contact-trustee"
-      className="scroll-mt-24 bg-surface-container-low py-20 md:py-28 lg:py-section-gap"
-    >
-      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-5 md:px-8 lg:grid-cols-2 lg:gap-gutter lg:px-margin-desktop">
-        <div>
-          <span className="font-body text-label-md font-semibold uppercase tracking-widest text-secondary">
-            Want to Help?
-          </span>
-          <h2 className="mt-4 font-headline text-3xl md:text-4xl lg:text-headline-lg text-primary">
-            Contact a Trustee
-          </h2>
-          <p className="mt-4 max-w-md font-body text-body-md text-on-surface-variant md:text-body-lg">
-            Whether you&rsquo;d like to volunteer, partner on a drive, or simply
-            learn more, a trustee will personally get back to you. Leave a note
-            below or call us directly.
-          </p>
+    <>
+      <Toast
+        message="Message sent! A trustee will get back to you shortly."
+        visible={toastVisible}
+        onClose={() => setToastVisible(false)}
+      />
 
-          <div className="mt-8 flex flex-col gap-3">
-            <span className="font-body text-label-md uppercase tracking-widest text-on-surface-variant">
-              Call a trustee
+      <section
+        id="contact-trustee"
+        className="scroll-mt-24 section-py bg-surface-container-low"
+      >
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-5 md:px-8 lg:grid-cols-2 lg:gap-gutter lg:px-margin-desktop">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <span className="font-body text-label-md font-semibold uppercase tracking-widest text-secondary">
+              Want to Help?
             </span>
-            <div className="flex flex-wrap gap-3">
-              {trusteePhones.map((phone) => (
-                <a
-                  key={phone}
-                  href={`tel:${phone.replace(/[^+\d]/g, "")}`}
-                  className="inline-flex items-center gap-2 rounded-full border border-outline-variant bg-surface-container-lowest px-4 py-2 font-body text-body-md text-primary transition-all hover:border-primary hover:bg-primary-fixed"
-                >
-                  <Phone size={15} /> {phone}
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
+            <h2 className="mt-3 font-headline text-3xl text-primary md:mt-4 md:text-4xl lg:text-headline-lg">
+              Contact a Trustee
+            </h2>
+            <p className="mt-3 max-w-md font-body text-body-md text-on-surface-variant md:mt-4 md:text-body-lg">
+              Whether you&rsquo;d like to volunteer, partner on a drive, or simply
+              learn more, a trustee will personally get back to you. All fields
+              are required.
+            </p>
 
-        <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-6 md:p-8 lg:p-10">
-          {submitted ? (
-            <div className="flex h-full min-h-[20rem] flex-col items-center justify-center text-center">
-              <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-primary-fixed text-primary">
-                <CheckCircle2 size={32} strokeWidth={1.5} />
+            <div className="mt-6 md:mt-8">
+              <span className="mb-2 block font-body text-label-md uppercase tracking-widest text-on-surface-variant">
+                Call a trustee
               </span>
-              <h3 className="mt-6 font-headline text-2xl md:text-headline-sm text-primary">
-                Message submitted
-              </h3>
-              <p className="mt-3 max-w-xs font-body text-body-md text-on-surface-variant">
-                Thank you for reaching out. A trustee will get back to you
-                shortly.
-              </p>
-              <button
-                type="button"
-                onClick={() => setSubmitted(false)}
-                className="mt-6 font-body text-label-md font-semibold uppercase tracking-widest text-secondary transition-colors hover:text-primary"
-              >
-                Send another message
-              </button>
+              <TrusteePhones />
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.08 }}
+            className="rounded-xl border border-outline-variant bg-surface-container-lowest p-5 md:p-8 lg:p-10"
+          >
+            <form onSubmit={handleSubmit} className="flex flex-col gap-4 md:gap-5" noValidate={false}>
               {isCoolingDown && (
                 <div
                   role="alert"
@@ -142,9 +168,19 @@ export function ContactTrustee() {
                   <AlertCircle size={18} className="mt-0.5 shrink-0" />
                   <span>
                     You&rsquo;ve sent a few messages already. Please wait{" "}
-                    <strong>{formatCooldown(secondsLeft)}</strong> before
-                    sending another, or call a trustee directly.
+                    <strong>{formatCooldown(secondsLeft)}</strong> before sending
+                    another, or call a trustee directly.
                   </span>
+                </div>
+              )}
+
+              {formError && (
+                <div
+                  role="alert"
+                  className="flex items-start gap-3 rounded-lg border border-error/40 bg-error/5 px-4 py-3 font-body text-body-sm text-error"
+                >
+                  <AlertCircle size={18} className="mt-0.5 shrink-0" />
+                  <span>{formError}</span>
                 </div>
               )}
 
@@ -153,7 +189,7 @@ export function ContactTrustee() {
                   htmlFor="ct-name"
                   className="font-body text-label-md uppercase tracking-widest text-on-surface-variant"
                 >
-                  Your name
+                  Your name <span className="text-error">*</span>
                 </label>
                 <input
                   id="ct-name"
@@ -167,17 +203,34 @@ export function ContactTrustee() {
 
               <div className="flex flex-col gap-2">
                 <label
-                  htmlFor="ct-contact"
+                  htmlFor="ct-email"
                   className="font-body text-label-md uppercase tracking-widest text-on-surface-variant"
                 >
-                  Phone or email
+                  Email <span className="text-error">*</span>
                 </label>
                 <input
-                  id="ct-contact"
-                  name="contact"
-                  type="text"
+                  id="ct-email"
+                  name="email"
+                  type="email"
                   required
-                  placeholder="How can we reach you?"
+                  placeholder="you@example.com"
+                  className="rounded-lg border border-outline-variant bg-surface px-4 py-3 font-body text-body-md text-primary outline-none transition-colors placeholder:text-on-surface-variant/60 focus:border-primary"
+                />
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label
+                  htmlFor="ct-phone"
+                  className="font-body text-label-md uppercase tracking-widest text-on-surface-variant"
+                >
+                  Phone <span className="text-error">*</span>
+                </label>
+                <input
+                  id="ct-phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  placeholder="+91 XXXXX XXXXX"
                   className="rounded-lg border border-outline-variant bg-surface px-4 py-3 font-body text-body-md text-primary outline-none transition-colors placeholder:text-on-surface-variant/60 focus:border-primary"
                 />
               </div>
@@ -187,7 +240,7 @@ export function ContactTrustee() {
                   htmlFor="ct-message"
                   className="font-body text-label-md uppercase tracking-widest text-on-surface-variant"
                 >
-                  Message
+                  Message <span className="text-error">*</span>
                 </label>
                 <textarea
                   id="ct-message"
@@ -201,10 +254,12 @@ export function ContactTrustee() {
 
               <button
                 type="submit"
-                disabled={isCoolingDown}
+                disabled={isCoolingDown || submitting}
                 className="mt-1 inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-7 font-body text-label-md font-semibold uppercase tracking-wider text-on-primary transition-all hover:bg-primary-container hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-primary disabled:hover:shadow-none"
               >
-                {isCoolingDown ? (
+                {submitting ? (
+                  <>Sending…</>
+                ) : isCoolingDown ? (
                   <>Try again in {formatCooldown(secondsLeft)}</>
                 ) : (
                   <>
@@ -213,9 +268,9 @@ export function ContactTrustee() {
                 )}
               </button>
             </form>
-          )}
+          </motion.div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -7,7 +7,7 @@ export function EventsGrid() {
   return (
     <section
       aria-labelledby="archive-heading"
-      className="bg-surface pb-24 md:pb-32 lg:pb-section-gap"
+      className="bg-surface pb-24 md:pb-32 lg:pb-20"
     >
       <div className="mx-auto max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
         <div className="mb-12 flex flex-col items-start justify-between gap-6 md:mb-16 md:flex-row md:items-end">

@@ -8,4 +8,5 @@ export const bankDetails = {
   bank: "Union Bank of India",
   branch: "Bommasandra Branch, Bangalore 560099",
   ifsc: "UBIN0913740",
+  upiId: "86435401@ubin",
 } as const;

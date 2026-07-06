@@ -57,7 +57,7 @@ export function EventNav({ older, newer }: EventNavProps) {
   return (
     <nav
       aria-label="Event navigation"
-      className="mx-auto max-w-7xl px-5 pb-20 md:px-8 md:pb-28 lg:px-margin-desktop lg:pb-section-gap"
+      className="mx-auto max-w-7xl px-5 pb-20 md:px-8 md:pb-28 lg:px-margin-desktop lg:pb-20"
     >
       <div className="mb-6 border-t border-outline-variant pt-10 md:mb-8">
         <span className="font-body text-label-md font-semibold uppercase tracking-widest text-secondary">

@@ -7,7 +7,7 @@ export function LocationSection() {
   return (
     <section
       aria-labelledby="find-us-heading"
-      className="bg-surface py-20 md:py-28 lg:py-section-gap"
+      className="bg-surface section-py"
     >
       <div className="mx-auto max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
         <div className="mb-10 max-w-2xl md:mb-12">

@@ -3,7 +3,7 @@ import { Skeleton, SkeletonText } from "@/components/skeletons/primitives";
 export default function EventsLoading() {
   return (
     <>
-      <section className="relative w-full overflow-hidden bg-surface pt-16 pb-20 md:pt-24 md:pb-28 lg:pb-section-gap">
+      <section className="relative w-full overflow-hidden bg-surface pt-16 pb-20 md:pt-24 md:pb-28 lg:pb-20">
         <div className="mx-auto grid max-w-7xl grid-cols-12 items-center gap-gutter px-5 md:px-8 lg:px-margin-desktop">
           <div className="col-span-12 space-y-4 lg:col-span-7">
             <Skeleton className="h-4 w-44" />

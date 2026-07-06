@@ -22,7 +22,7 @@ export default function AboutLoading() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-7xl px-5 py-20 md:px-8 lg:px-margin-desktop lg:py-section-gap">
+      <section className="mx-auto max-w-7xl px-5 py-20 md:px-8 lg:px-margin-desktop lg:py-20">
         <div className="mb-16 space-y-4 text-center">
           <Skeleton className="mx-auto h-12 w-60" />
           <Skeleton className="mx-auto h-4 w-80" />

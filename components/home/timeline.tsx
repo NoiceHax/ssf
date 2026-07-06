@@ -24,7 +24,7 @@ const items = [
 
 export function Timeline() {
   return (
-    <section className="bg-surface px-5 py-20 md:px-8 md:py-28 lg:px-margin-desktop lg:py-section-gap">
+    <section className="bg-surface px-5 py-20 md:px-8 md:py-28 lg:px-margin-desktop lg:py-20">
       <div className="mx-auto max-w-[1000px]">
         <Reveal className="mb-16 text-center md:mb-24">
           <h2 className="font-headline text-3xl md:text-4xl lg:text-headline-lg text-primary">

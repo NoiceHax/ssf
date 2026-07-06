@@ -7,7 +7,7 @@ export function OriginStory() {
   const eventsConducted = getAllEvents().length;
 
   return (
-    <section className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28 lg:px-margin-desktop lg:py-section-gap">
+    <section className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28 lg:px-margin-desktop lg:py-20">
       <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-gutter">
         <Reveal className="relative lg:col-span-5">
           <div className="pointer-events-none absolute -left-12 -top-12 -z-10 h-48 w-48 rounded-full bg-secondary-fixed/40 blur-3xl" />

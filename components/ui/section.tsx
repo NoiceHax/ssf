@@ -26,9 +26,20 @@ export function Section({
   );
 }
 
-export function SectionEyebrow({ children }: { children: React.ReactNode }) {
+export function SectionEyebrow({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
-    <span className="font-body text-label-md font-semibold uppercase tracking-widest text-secondary">
+    <span
+      className={cn(
+        "font-body text-label-md font-semibold uppercase tracking-widest text-secondary",
+        className
+      )}
+    >
       {children}
     </span>
   );

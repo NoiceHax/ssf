@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
-import { Check, ChevronDown, Copy, QrCode, ShieldCheck } from "lucide-react";
+import { Check, Copy, ShieldCheck, Smartphone } from "lucide-react";
 import { bankDetails } from "@/lib/donate";
 import { brand } from "@/lib/brand";
 import { cn } from "@/lib/utils";
@@ -19,11 +18,11 @@ const rows: Row[] = [
 
 export function BankDetails() {
   return (
-    <section id="bank-details" className="bg-surface py-20 md:py-28 lg:py-section-gap scroll-mt-24">
+    <section id="bank-details" className="section-py bg-surface scroll-mt-24">
       <div className="mx-auto max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-gutter">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-gutter">
           <div className="lg:col-span-5">
-            <h2 className="mb-4 font-headline text-3xl md:text-4xl lg:text-headline-lg text-primary">
+            <h2 className="mb-3 font-headline text-3xl md:mb-4 md:text-4xl lg:text-headline-lg text-primary">
               Bank Details
             </h2>
             <p className="font-body text-body-md text-on-surface-variant">
@@ -32,7 +31,7 @@ export function BankDetails() {
               if possible, email us a confirmation so we can issue your 80G
               receipt.
             </p>
-            <div className="mt-8 inline-flex items-start gap-3 rounded-lg border border-outline-variant bg-surface-container-low p-5">
+            <div className="mt-6 inline-flex items-start gap-3 rounded-lg border border-outline-variant bg-surface-container-low p-4 md:mt-8 md:p-5">
               <ShieldCheck size={22} className="mt-0.5 shrink-0 text-secondary" />
               <p className="font-body text-body-md text-on-surface">
                 All donations to {brand.name} are eligible for{" "}
@@ -49,7 +48,7 @@ export function BankDetails() {
               ))}
             </dl>
 
-            <UpiQr />
+            <UpiPay />
           </div>
         </div>
       </div>
@@ -57,79 +56,77 @@ export function BankDetails() {
   );
 }
 
-function UpiQr() {
-  const [open, setOpen] = useState(false);
-
+function UpiPay() {
   return (
-    <div className="mt-6 overflow-hidden rounded-xl border border-outline-variant bg-surface-container-lowest">
-      <button
-        type="button"
-        onClick={() => setOpen((s) => !s)}
-        aria-expanded={open}
-        aria-controls="upi-qr-panel"
-        className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left transition-colors hover:bg-surface-container-low sm:px-8"
-      >
-        <span className="flex items-center gap-4">
-          <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary-fixed text-primary">
-            <QrCode size={20} />
-          </span>
-          <span>
-            <span className="block font-headline text-lg text-primary md:text-xl">
-              Pay via UPI
-            </span>
-            <span className="block font-body text-label-md uppercase tracking-widest text-on-surface-variant">
-              {open ? "QR code shown below" : "Tap to reveal QR code"}
-            </span>
-          </span>
+    <div className="mt-5 overflow-hidden rounded-xl border border-outline-variant bg-surface-container-lowest md:mt-6">
+      <div className="flex items-start gap-4 border-b border-outline-variant px-5 py-4 sm:px-6 md:px-8">
+        <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-fixed text-primary">
+          <Smartphone size={18} />
         </span>
-        <ChevronDown
-          size={22}
-          className={cn(
-            "shrink-0 text-on-surface-variant transition-transform duration-300",
-            open && "rotate-180"
-          )}
-        />
-      </button>
-
-      <div
-        id="upi-qr-panel"
-        hidden={!open}
-        className="border-t border-outline-variant px-6 py-8 sm:px-8"
-      >
-        <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start sm:gap-10">
-          <div className="relative h-56 w-56 shrink-0 overflow-hidden rounded-xl border border-outline-variant bg-white p-3 sm:h-64 sm:w-64">
-            <Image
-              src="/upi-qr.png"
-              alt="UPI QR code for Sneha Sammilana Foundation"
-              fill
-              sizes="256px"
-              className="object-contain"
-            />
-          </div>
-          <div className="text-center sm:text-left">
-            <p className="font-body text-body-md text-on-surface-variant">
-              Scan with any UPI app (Google Pay, PhonePe, Paytm, BHIM) to
-              donate directly to the foundation&rsquo;s verified account.
-            </p>
-            <p className="mt-4 font-body text-label-md uppercase tracking-widest text-on-surface-variant">
-              Beneficiary
-            </p>
-            <p className="font-headline text-lg text-primary">
-              {bankDetails.accountName}
-            </p>
-            <p className="mt-4 font-body text-body-md text-on-surface-variant">
-              Please share a screenshot to{" "}
-              <a
-                href={`mailto:${brand.contact.email}`}
-                className="font-semibold text-primary underline-offset-4 hover:underline"
-              >
-                {brand.contact.email}
-              </a>{" "}
-              so we can issue your 80G receipt.
-            </p>
-          </div>
+        <div>
+          <h3 className="font-headline text-lg text-primary md:text-xl">
+            Pay via UPI
+          </h3>
+          <p className="mt-1 font-body text-body-sm text-on-surface-variant md:text-body-md">
+            Open any UPI app and send to the ID below. Mention your name in the
+            payment note.
+          </p>
         </div>
       </div>
+
+      <div className="px-5 py-5 sm:px-6 md:px-8 md:py-6">
+        <p className="font-body text-label-md uppercase tracking-widest text-on-surface-variant">
+          UPI ID
+        </p>
+        <UpiIdRow id={bankDetails.upiId} />
+        <p className="mt-4 font-body text-label-md uppercase tracking-widest text-on-surface-variant">
+          Beneficiary
+        </p>
+        <p className="font-headline text-lg text-primary">{bankDetails.accountName}</p>
+        <p className="mt-4 font-body text-body-sm text-on-surface-variant md:text-body-md">
+          Share a screenshot to{" "}
+          <a
+            href={`mailto:${brand.contact.email}`}
+            className="font-semibold text-primary underline-offset-4 hover:underline"
+          >
+            {brand.contact.email}
+          </a>{" "}
+          so we can issue your 80G receipt.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function UpiIdRow({ id }: { id: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copy() {
+    try {
+      await navigator.clipboard.writeText(id);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      /* clipboard blocked */
+    }
+  }
+
+  return (
+    <div className="mt-1 flex flex-wrap items-center gap-3">
+      <span className="font-headline text-xl text-primary md:text-2xl">{id}</span>
+      <button
+        type="button"
+        onClick={copy}
+        className={cn(
+          "inline-flex h-9 items-center gap-1.5 rounded-full border border-outline-variant px-3 font-body text-label-md uppercase tracking-widest transition-colors",
+          copied
+            ? "border-secondary bg-secondary-fixed text-secondary"
+            : "text-on-surface-variant hover:border-primary hover:text-primary"
+        )}
+      >
+        {copied ? <Check size={14} /> : <Copy size={14} />}
+        {copied ? "Copied" : "Copy"}
+      </button>
     </div>
   );
 }
@@ -148,7 +145,7 @@ function BankRow({ row }: { row: Row }) {
   }
 
   return (
-    <div className="flex flex-col gap-2 px-6 py-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-8 sm:py-5">
+    <div className="flex flex-col gap-1.5 px-5 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-6 sm:py-4 md:px-8 md:py-5">
       <dt className="font-body text-label-md uppercase tracking-widest text-on-surface-variant">
         {row.label}
       </dt>

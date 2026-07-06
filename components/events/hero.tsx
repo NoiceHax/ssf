@@ -11,7 +11,7 @@ export function EventsHero() {
   const heroImage = heroEvent?.coverImage ?? null;
 
   return (
-    <section className="relative overflow-hidden pt-16 pb-20 md:pt-24 md:pb-28 lg:pb-section-gap">
+    <section className="relative overflow-hidden pt-16 pb-20 md:pt-24 md:pb-28 lg:pb-20">
       <div className="mx-auto grid max-w-7xl grid-cols-12 items-center gap-gutter px-5 md:px-8 lg:px-margin-desktop">
         <div className="z-10 col-span-12 lg:col-span-7">
           <SectionEyebrow>Gatherings &amp; Purpose</SectionEyebrow>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowUpRight, Mail, MapPin, Youtube } from "lucide-react";
 import { Logo } from "@/components/logo";
+import { VisitorCounter } from "@/components/visitor-counter";
 import { brand } from "@/lib/brand";
 
 const footerNav = [
@@ -20,6 +21,7 @@ export function Footer() {
           <p className="mt-4 max-w-xs font-body text-[15px] leading-relaxed text-inverse-on-surface/80">
             {brand.tagline}
           </p>
+          <VisitorCounter />
           <div className="mt-5 flex items-center gap-3">
             <a
               href={`mailto:${brand.contact.email}`}
@@ -96,7 +98,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-inverse-on-surface/10">
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-5 py-5 md:px-8 lg:px-margin-desktop">
+        <div className="mx-auto flex w-full max-w-7xl flex-col gap-2 px-5 py-4 sm:flex-row sm:items-center sm:justify-between md:px-8 lg:px-margin-desktop">
           <p className="font-body text-[13px] text-inverse-on-surface/50">
             &copy; {new Date().getFullYear()} {brand.name}. Registered NGO
             under Section 8.

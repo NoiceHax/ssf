@@ -22,7 +22,7 @@ const programs: Program[] = [
     icon: BookOpenText,
     title: "Education Support",
     description:
-      "Providing scholarships, school kits, and digital literacy programs for children in government schools across Bangalore surroundings.",
+      "Providing scholarships, learning support, and digital literacy programs for children in government schools across Bangalore surroundings.",
     tone: "primary",
   },
   {
@@ -50,7 +50,7 @@ const programs: Program[] = [
 
 export function Programs() {
   return (
-    <section className="bg-surface-bright py-20 md:py-28 lg:py-section-gap">
+    <section className="bg-surface-bright section-py">
       <div className="mx-auto max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
         <Reveal className="mb-16 text-center md:mb-20">
           <SectionEyebrow>Our Focus Areas</SectionEyebrow>

@@ -133,7 +133,7 @@ export function SkeletonStats({ count = 4 }: { count?: number }) {
 
 export function SkeletonContentBlock() {
   return (
-    <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 lg:px-margin-desktop lg:py-section-gap">
+    <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 lg:px-margin-desktop lg:py-20">
       <div className="mb-12 space-y-4 text-center">
         <Skeleton className="mx-auto h-4 w-40" />
         <Skeleton className="mx-auto h-10 w-72" />

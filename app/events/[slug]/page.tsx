@@ -54,7 +54,7 @@ export default function EventDetailPage({ params }: { params: Params }) {
       {event.galleryImages.length > 0 && (
         <section
           aria-labelledby="gallery-heading"
-          className="pb-20 md:pb-28 lg:pb-section-gap"
+          className="section-pb"
         >
           <div className="mx-auto mb-8 max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
             <span className="font-body text-label-md font-semibold uppercase tracking-widest text-secondary">
@@ -77,7 +77,7 @@ export default function EventDetailPage({ params }: { params: Params }) {
       )}
 
       {event.galleryImages.length === 0 && (
-        <section className="pb-20 md:pb-28 lg:pb-section-gap">
+        <section className="section-pb">
           <div className="mx-auto max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
             <div className="flex flex-col items-center gap-4 border border-dashed border-outline-variant bg-surface-container-low px-6 py-14 text-center md:py-20">
               <span className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-secondary-fixed/50 text-secondary">

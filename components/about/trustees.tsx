@@ -3,7 +3,7 @@ import { trustees } from "@/src/data/trustees";
 
 export function Trustees() {
   return (
-    <section className="bg-surface-container-high py-20 md:py-28 lg:py-section-gap">
+    <section className="bg-surface-container-high section-py">
       <div className="mx-auto max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
         <div className="mb-12 max-w-2xl md:mb-16">
           <h2 className="mb-4 font-headline text-3xl md:text-4xl lg:text-headline-lg text-primary">

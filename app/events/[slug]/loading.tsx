@@ -19,7 +19,7 @@ export default function EventDetailLoading() {
         </div>
       </section>
 
-      <section className="pb-20 md:pb-28 lg:pb-section-gap">
+      <section className="section-pb">
         <div className="mx-auto mb-8 max-w-7xl px-5 md:px-8 lg:px-margin-desktop">
           <Skeleton className="h-4 w-32" />
           <Skeleton className="mt-3 h-8 w-48" />
