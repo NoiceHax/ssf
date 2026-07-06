@@ -3,6 +3,8 @@ import fs from "node:fs";
 import path from "node:path";
 
 const COUNT_FILE = path.join(process.cwd(), ".local", "visitor-count.json");
+/** Added to the stored count for public display. */
+const VISITOR_BASELINE = 650;
 
 type GlobalStore = typeof globalThis & { __ssfVisitorCount?: number };
 
@@ -38,12 +40,16 @@ function setCount(count: number) {
   }
 }
 
+function displayCount(stored: number) {
+  return stored + VISITOR_BASELINE;
+}
+
 export async function GET() {
-  return NextResponse.json({ count: getCount() });
+  return NextResponse.json({ count: displayCount(getCount()) });
 }
 
 export async function POST() {
-  const count = getCount() + 1;
-  setCount(count);
-  return NextResponse.json({ count });
+  const stored = getCount() + 1;
+  setCount(stored);
+  return NextResponse.json({ count: displayCount(stored) });
 }
